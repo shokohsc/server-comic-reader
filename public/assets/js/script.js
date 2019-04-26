@@ -6,7 +6,6 @@ $(function(){
 
 	// Start by fetching the file data from scan.php with an AJAX request
 
-	// $.get('http://localhost/scan', function(data) {
 	$.get('/scan', function(data) {
 
 		var response = [data],
