@@ -4,6 +4,19 @@ namespace App\Service;
 
 class ScanDirectoryService
 {
+    /**
+     * @param string $projectDirectory
+     */
+    public function __construct(string $projectDirectory)
+    {
+        $this->projectDirectory = $projectDirectory;
+    }
+
+    /**
+     * @param  string $directory
+     *
+     * @return array
+     */
     public function scan(string $directory): array
     {
       $files = array();
@@ -25,7 +38,7 @@ class ScanDirectoryService
             $files[] = array(
               "name" => $f,
               "type" => "folder",
-              "path" => $this->hideAbsolutePath($directory) . '/' . $f,
+              "path" => $this->getRelativePath($directory) . '/' . $f,
               "items" => $this->scan($directory . '/' . $f) // Recursively get the contents of the folder
             );
           }
@@ -37,7 +50,7 @@ class ScanDirectoryService
             $files[] = array(
               "name" => $f,
               "type" => "file",
-              "path" => $this->hideAbsolutePath($directory) . '/' . $f,
+              "path" => $this->getRelativePath($directory) . '/' . $f,
               "size" => filesize($directory . '/' . $f) // Gets the size of this file
             );
           }
@@ -48,12 +61,18 @@ class ScanDirectoryService
       return $files;
     }
 
-    protected function hideAbsolutePath(string $path): string
+    /**
+     * @param  string $path
+     *
+     * @return string
+     */
+    protected function getRelativePath(string $path): string
     {
-      $start = strpos($path, '/var/www/html/public/');
+      $absolutePath = $this->projectDirectory . '/public/';
+      $start = strpos($path, $absolutePath);
 
       if (false !== $start) {
-        $end = strlen('/var/www/html/public/');
+        $end = strlen($absolutePath);
 
         return substr($path, $end);
       }
