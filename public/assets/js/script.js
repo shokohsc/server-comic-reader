@@ -4,7 +4,7 @@ $(function(){
 		breadcrumbs = $('.breadcrumbs'),
 		fileList = filemanager.find('.data');
 
-	// Start by fetching the file data from scan.php with an AJAX request
+	// Start by fetching the file data from /scan with an AJAX request
 
 	$.get('/scan', function(data) {
 
@@ -119,6 +119,18 @@ $(function(){
 
 			window.location.hash = encodeURIComponent(nextDir);
 			currentPath = nextDir;
+		});
+
+		// Clicking on files
+
+		fileList.on('click', 'a.files', function(e){
+			e.preventDefault();
+			var path = encodeURIComponent(this.title);
+
+			$.get('/read/' + path, function(data) {
+				console.log(data);
+				var response = data;
+			});
 		});
 
 

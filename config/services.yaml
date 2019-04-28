@@ -30,3 +30,5 @@ services:
     App\Service\ScanDirectoryService:
       arguments:
         $projectDirectory: '%kernel.project_dir%'
+
+    Symfony\Component\Mime\MimeTypes:
