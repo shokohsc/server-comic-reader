@@ -125,13 +125,40 @@ $(function(){
 
 		fileList.on('click', 'a.files', function(e){
 			e.preventDefault();
-			var path = encodeURIComponent(this.title);
-
-			$.get('/read/' + path, function(data) {
-				console.log(data);
-				var response = data;
-			});
+			if (null != this.title.match(/files\/(.+)\.(cbr|cbz)$/gm)) {
+				$.get('/read/' + encodeURIComponent(this.title), function(data) {
+					displayGallery(data);
+				});
+			}
 		});
+
+		function displayGallery(data)
+		{
+			document.getElementById('gallery').classList.toggle('hidden');
+			document.getElementById('gallery').classList.toggle('visible');
+
+			var pswpElement = document.querySelectorAll('.pswp')[0];
+			// build items array
+			var items = [];
+			$.each(data, function(index, image) {
+				items.push({'src': 'data:' + image.type + ';base64,' + image.image, 'h': image.height, 'w': image.width});
+			});
+
+			// define options (if needed)
+			var options = {
+			    index: 0 // start at first slide
+			};
+
+			// Initializes and opens PhotoSwipe
+			var pswp = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+
+			pswp.listen('destroy', function() {
+				document.getElementById('gallery').classList.toggle('hidden');
+				document.getElementById('gallery').classList.toggle('visible');
+			});
+
+			pswp.init();
+		}
 
 
 		// Clicking on breadcrumbs

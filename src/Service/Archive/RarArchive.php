@@ -22,11 +22,17 @@ class RarArchive implements ArchiveInterface
             $entries = $this->archive->getEntries();
             $entries = $this->sortFiles($entries);
             $output = [];
-            foreach ($entries as $file) {
+            foreach ($entries as $key => $file) {
                 if (($file->getUnpackedSize() > 0) && preg_match('/jp(e?)g|gif|png/i', $file->getName())) {
                     $file->extract(sys_get_temp_dir());
                     $extractedFile = sys_get_temp_dir() .'/'. $file->getName();
-                    $output[] = base64_encode(file_get_contents($extractedFile));
+                    list($width, $height, $type, $attr) = getimagesize($extractedFile);
+                    $output[] = [
+                        'image' => base64_encode(file_get_contents($extractedFile)),
+                        'width' => $width,
+                        'height' => $height,
+                        'type' => image_type_to_mime_type($type),
+                    ];
                     unlink($extractedFile);
                 };
             }

@@ -33,7 +33,13 @@ class ZipArchive implements ArchiveInterface
                 if (preg_match('/(jp(e?)g|png|gif)$/i', $name)) {
                     $resource = $this->archive->getStream($name);
                     $contents = fread($resource, $size);
-                    $output[] = base64_encode($contents);
+                    list($width, $height, $type, $attr) = getimagesizefromstring($contents);
+                    $output[] = [
+                        'image' => base64_encode($contents),
+                        'width' => $width,
+                        'height' => $height,
+                        'type' => image_type_to_mime_type($type),
+                    ];
                     fclose($resource);
                 }
             }

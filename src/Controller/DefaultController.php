@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Factory\FactoryInterface;
+use App\Service\ReaderService;
 use App\Service\ScanDirectoryService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -36,11 +36,10 @@ class DefaultController extends AbstractController
     /**
      * @Route("/read/{path}", requirements={"path"=".+"})
      */
-    public function read(string $path, FactoryInterface $factory)
+    public function read(string $path, ReaderService $service)
     {
         $path = $this->getParameter('kernel.project_dir') . '/public/' . rawurldecode($path);
-        $archive = $factory->build($path);
 
-        return new JsonResponse($archive->extract($path));
+        return new JsonResponse($service->read($path));
     }
 }

@@ -5,6 +5,11 @@ namespace App\Service;
 class ScanDirectoryService
 {
     /**
+     * @var string
+     */
+    private $projectDirectory;
+
+    /**
      * @param string $projectDirectory
      */
     public function __construct(string $projectDirectory)

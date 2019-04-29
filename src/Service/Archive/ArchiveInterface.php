@@ -2,8 +2,6 @@
 
 namespace App\Service\Archive;
 
-use App\Service\Archive\ArchiveInterface;
-
 interface ArchiveInterface
 {
   /**
