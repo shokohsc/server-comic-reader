@@ -13,12 +13,15 @@ class RarArchive implements ArchiveInterface
     private $archive;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function extract(string $path): array
     {
         try {
             $this->open($path);
+            if ($this->archive->isBroken()) {
+                throw new \Exception(sprintf("Archive %s is broken", $path));
+            }
             $entries = $this->archive->getEntries();
             $entries = $this->sortFiles($entries);
             $output = [];
@@ -36,6 +39,7 @@ class RarArchive implements ArchiveInterface
                     unlink($extractedFile);
                 };
             }
+            sys_get_temp_dir() === dirname($extractedFile) ?: rmdir(dirname($extractedFile));
             $this->close();
 
             return $output;

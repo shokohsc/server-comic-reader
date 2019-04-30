@@ -8,42 +8,36 @@ use ZipArchive as BaseZipArchive;
 class ZipArchive implements ArchiveInterface
 {
     /**
-     * @var BaseRarArchive
+     * @var BaseZipArchive
      */
     private $archive;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function extract(string $path): array
     {
         try {
             $this->open($path);
-
-            $entries = [];
-            for ($i = 0; $i < $this->archive->numFiles; $i++) {
-                $entry = $this->archive->statIndex($i);
-                $entries[$i] = $entry;
-            }
-            asort($entries);
+            $this->archive->extractTo(sys_get_temp_dir());
+            $entries = $this->sortFiles();
             $output = [];
-            foreach ($entries as $entry) {
-                $name = $entry['name'];
-                $size = $entry['size'];
-                if (preg_match('/(jp(e?)g|png|gif)$/i', $name)) {
-                    $resource = $this->archive->getStream($name);
-                    $contents = fread($resource, $size);
-                    list($width, $height, $type, $attr) = getimagesizefromstring($contents);
+            $directories = [];
+            foreach ($entries as $key => $file) {
+                $extractedFile = sys_get_temp_dir() .'/'. $file['name'];
+                if (($file['size'] > 0) && preg_match('/jp(e?)g|gif|png/i', $extractedFile)) {
+                    list($width, $height, $type, $attr) = getimagesize($extractedFile);
                     $output[] = [
-                        'image' => base64_encode($contents),
+                        'image' => base64_encode(file_get_contents($extractedFile)),
                         'width' => $width,
                         'height' => $height,
                         'type' => image_type_to_mime_type($type),
                     ];
-                    fclose($resource);
-                }
+                };
+                is_dir($extractedFile) ? $directories[] = $extractedFile : unlink($extractedFile);
             }
             $this->close();
+            $this->cleanDirectories($directories);
 
             return $output;
         } catch (\Exception $e) {
@@ -52,7 +46,34 @@ class ZipArchive implements ArchiveInterface
     }
 
     /**
-     * @inheritdoc
+     * @param array $directories
+     */
+    protected function cleanDirectories(array $directories): void
+    {
+        foreach (array_reverse($directories) as $directory) {
+            rmdir($directory);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    protected function sortFiles(): array
+    {
+        $entries = [];
+        for ($i = 0; $i < $this->archive->numFiles; $i++) {
+            $entry = $this->archive->statIndex($i);
+            $entries[$i] = $entry;
+        }
+        asort($entries);
+
+        return $entries;
+    }
+
+    /**
+     * @param string $path
+     *
+     * @throws \Exception
      */
     protected function open($path): void
     {
@@ -65,7 +86,7 @@ class ZipArchive implements ArchiveInterface
     }
 
     /**
-     * @inheritdoc
+     * @throws \Exception
      */
     protected function close(): void
     {

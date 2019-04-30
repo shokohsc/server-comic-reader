@@ -127,7 +127,9 @@ $(function(){
 			e.preventDefault();
 			if (null != this.title.match(/files\/(.+)\.(cbr|cbz)$/gm)) {
 				$.get('/read/' + encodeURIComponent(this.title), function(data) {
-					displayGallery(data);
+					if (0 < data.length) {
+						displayGallery(data);
+					}
 				});
 			}
 		});
