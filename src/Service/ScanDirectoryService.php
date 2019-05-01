@@ -24,46 +24,41 @@ class ScanDirectoryService
      */
     public function scan(string $directory): array
     {
-      $files = array();
+        $files = array();
 
-      // Is there actually such a folder/file?
+        // Is there actually such a folder/file?
 
-      if(file_exists($directory)){
+        if (file_exists($directory)) {
+            foreach (scandir($directory) as $f) {
+                if (!$f || $f[0] == '.') {
+                    continue; // Ignore hidden files
+                }
 
-        foreach(scandir($directory) as $f) {
+                if (is_dir($directory . '/' . $f)) {
 
-          if(!$f || $f[0] == '.') {
-            continue; // Ignore hidden files
-          }
+                    // The path is a folder
 
-          if(is_dir($directory . '/' . $f)) {
+                    $files[] = array(
+                      "name" => $f,
+                      "type" => "folder",
+                      "path" => $this->getRelativePath($directory) . '/' . $f,
+                      "items" => $this->scan($directory . '/' . $f) // Recursively get the contents of the folder
+                    );
+                } else {
 
-            // The path is a folder
+                    // It is a file
 
-            $files[] = array(
-              "name" => $f,
-              "type" => "folder",
-              "path" => $this->getRelativePath($directory) . '/' . $f,
-              "items" => $this->scan($directory . '/' . $f) // Recursively get the contents of the folder
-            );
-          }
-
-          else {
-
-            // It is a file
-
-            $files[] = array(
-              "name" => $f,
-              "type" => "file",
-              "path" => $this->getRelativePath($directory) . '/' . $f,
-              "size" => filesize($directory . '/' . $f) // Gets the size of this file
-            );
-          }
+                    $files[] = array(
+                      "name" => $f,
+                      "type" => "file",
+                      "path" => $this->getRelativePath($directory) . '/' . $f,
+                      "size" => filesize($directory . '/' . $f) // Gets the size of this file
+                    );
+                }
+            }
         }
 
-      }
-
-      return $files;
+        return $files;
     }
 
     /**
@@ -73,15 +68,15 @@ class ScanDirectoryService
      */
     protected function getRelativePath(string $path): string
     {
-      $absolutePath = $this->projectDirectory . '/public/';
-      $start = strpos($path, $absolutePath);
+        $absolutePath = $this->projectDirectory . '/public/';
+        $start = strpos($path, $absolutePath);
 
-      if (false !== $start) {
-        $end = strlen($absolutePath);
+        if (false !== $start) {
+            $end = strlen($absolutePath);
 
-        return substr($path, $end);
-      }
+            return substr($path, $end);
+        }
 
-      return $path;
+        return $path;
     }
 }
