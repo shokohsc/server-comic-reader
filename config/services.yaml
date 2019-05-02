@@ -32,3 +32,4 @@ services:
         $projectDirectory: '%kernel.project_dir%'
 
     Symfony\Component\Mime\MimeTypes:
+    Symfony\Component\Finder\Finder:

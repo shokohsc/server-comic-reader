@@ -2,6 +2,8 @@
 
 namespace App\Service;
 
+use Symfony\Component\Finder\Finder;
+
 class ScanDirectoryService
 {
     /**
@@ -24,37 +26,39 @@ class ScanDirectoryService
      */
     public function scan(string $directory): array
     {
-        $files = array();
+        $files = [];
 
-        // Is there actually such a folder/file?
-
-        if (file_exists($directory)) {
-            foreach (scandir($directory) as $f) {
-                if (!$f || $f[0] == '.') {
-                    continue; // Ignore hidden files
+        $finder = new Finder();
+        $finder
+            ->depth('== 0')
+            ->filter(function (\SplFileInfo $file) {
+                if (!is_dir($file->getRealPath())
+                    && filesize($file->getRealPath()) < 1000
+                    && !preg_match("/^(.+|\*+)(\.(cbr|cbz))$/i", $file->getRelativePathname())
+                ) {
+                    return false;
                 }
+            })
+            ->ignoreUnreadableDirs()
+            ->sortByName()
+            ->in($directory)
+        ;
 
-                if (is_dir($directory . '/' . $f)) {
-
-                    // The path is a folder
-
-                    $files[] = array(
-                      "name" => $f,
-                      "type" => "folder",
-                      "path" => $this->getRelativePath($directory) . '/' . $f,
-                      "items" => $this->scan($directory . '/' . $f) // Recursively get the contents of the folder
-                    );
-                } else {
-
-                    // It is a file
-
-                    $files[] = array(
-                      "name" => $f,
-                      "type" => "file",
-                      "path" => $this->getRelativePath($directory) . '/' . $f,
-                      "size" => filesize($directory . '/' . $f) // Gets the size of this file
-                    );
-                }
+        foreach ($finder as $file) {
+            if (is_dir($file->getRealPath())) {
+                $files[] = [
+                    "name" => $file->getRelativePathname(),
+                    "type" => "folder",
+                    "path" => $this->getRelativePath($file->getRealPath()),
+                    "items" => $this->scan($file->getRealPath()),
+                ];
+            } else {
+                $files[] = array(
+                    "name" => $file->getRelativePathname(),
+                    "type" => "file",
+                    "path" => $this->getRelativePath($file->getRealPath()),
+                    "size" => filesize($file->getRealPath()) // Gets the size of this file
+                );
             }
         }
 
