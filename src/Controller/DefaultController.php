@@ -11,15 +11,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class DefaultController extends AbstractController
 {
     /**
-      * @Route("/")
+      * @Route("/", methods={"GET"}))
       */
     public function index()
     {
-        return $this->render('index.html.twig');
+        return $this->render('base.html.twig');
     }
 
     /**
-      * @Route("/scan")
+      * @Route("/scan", methods={"GET"}))
       */
     public function scan(ScanDirectoryService $service): JsonResponse
     {
@@ -34,7 +34,7 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/read/{path}", requirements={"path"=".+"})
+     * @Route("/read/{path}", requirements={"path"=".+"}, methods={"GET"}))
      */
     public function read(string $path, ReaderService $service)
     {

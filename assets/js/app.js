@@ -6,14 +6,19 @@
  */
 
 // any CSS you require will output into a single css file (app.css in this case)
-require('../css/app.css');
-require('../css/main.css');
-require('../css/styles.css');
+// require('../css/app.css');
 
-
-import './script.js';
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
-// const $ = require('jquery');
+const $ = require('jquery');
 
-// console.log('Hello Webpack Encore! Edit me in assets/js/app.js');
+import App          from '../vue/App.vue';
+import Vue          from 'vue';
+
+/**
+* Create a fresh Vue Application instance
+*/
+new Vue({
+  el: '#app',
+  render: h => h(App)
+});
