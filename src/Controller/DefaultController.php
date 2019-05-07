@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Service\ReaderService;
 use App\Service\ScanDirectoryService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -12,6 +13,7 @@ class DefaultController extends AbstractController
 {
     /**
       * @Route("/", methods={"GET"}))
+      * @Cache(expires="tomorrow", public=true)
       */
     public function index()
     {
@@ -20,21 +22,24 @@ class DefaultController extends AbstractController
 
     /**
       * @Route("/scan", methods={"GET"}))
+      * @Cache(expires="tomorrow", public=true)
       */
     public function scan(ScanDirectoryService $service): JsonResponse
     {
         return new JsonResponse(
             [
-                "name" => "files",
-                "type" => "folder",
-                "path" => 'files',
-                "items" => $service->scan($this->getParameter('kernel.project_dir') . '/public/files'),
+                'id' => md5('files'),
+                'name' => 'files',
+                'type' => 'folder',
+                'path' => 'files',
+                'items' => $service->scan($this->getParameter('kernel.project_dir') . '/public/files'),
             ]
         );
     }
 
     /**
      * @Route("/read/{path}", requirements={"path"=".+"}, methods={"GET"}))
+     * @Cache(expires="tomorrow", public=true)
      */
     public function read(string $path, ReaderService $service)
     {
