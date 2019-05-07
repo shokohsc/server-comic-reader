@@ -1,7 +1,7 @@
 <template>
     <li @click.stop.prevent="browse" class="folders">
         <a :href="folder.path" :title="folder.path" class="folders">
-            <span :class="folder.icon"></span>
+            <span :class="folder.class"></span>
             <span class="name">{{ folder.name }}</span>
             <span class="details">{{ folder.itemsLength }}</span>
         </a>
@@ -17,7 +17,7 @@
                     id: '',
                     path: '',
                     type: '',
-                    icon: '',
+                    class: '',
                     name: '',
                     itemsLength: 'Empty',
                     items: []
@@ -41,9 +41,9 @@
             this.folder.type = this.propFolder.type;
             this.folder.items = this.propFolder.items;
             this.folder.name = this.escapeHTML(this.propFolder.name);
-            this.folder.icon = 'icon folder';
+            this.folder.class = 'icon folder';
             if (0 < this.propFolder.items.length) {
-                this.folder.icon = 'icon folder full';
+                this.folder.class = 'icon folder full';
                 this.folder.itemsLength = this.propFolder.items.length + ' items';
             }
             if (1 == this.propFolder.items.length) {

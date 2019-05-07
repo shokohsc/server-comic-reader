@@ -1,8 +1,8 @@
 <template>
     <div class="filemanager">
-        <Search :initialFiles.sync="files"></Search>
-        <Breadcrumb :propFiles.sync="files"></Breadcrumb>
-        <Files :propFiles.sync="files"></Files>
+        <Search :initialFiles="files"></Search>
+        <Breadcrumb :propFiles="files"></Breadcrumb>
+        <Files :propFiles="files"></Files>
     </div>
 </template>
 

@@ -26,7 +26,7 @@
         data: function () {
             return {
                 empty: true,
-                scannedFiles: this.propFiles,
+                scannedFiles: this.propFiles[0].items,
                 files: [],
                 folders: []
             }
