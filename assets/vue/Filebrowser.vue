@@ -2,7 +2,7 @@
     <div class="filemanager">
         <Search :initialFiles="files"></Search>
         <Breadcrumb :propFiles="files"></Breadcrumb>
-        <Files :propFiles="files"></Files>
+        <Files></Files>
     </div>
 </template>
 
@@ -17,45 +17,18 @@
             Files,
             Search
         },
-        data: function () {
-            return {
-                // files: []
-                files: [{
-                    id: '45b963397aa40d4a0063e0d85e4fe7a1',
-                    items: [
-                        {
-                            id: 'cd043010c87285aa9b4f9792c2ee907c',
-                            items: [],
-                            name: 'marvel week',
-                            path: 'files/marvel week',
-                            type: 'folder'
-                        },
-                        {
-                            id: 'e4b18e540a097d71829b0cbadd505456',
-                            items: [
-                                {
-                                id: '344ab7b27d84ebd0e7db3a4ce6661332',
-                                name: 'Batman - The Merciless 001 (2017) (Digital) (Zone-Empire).cbr',
-                                path: 'files/dc events/Batman - The Merciless 001 (2017) (Digital) (Zone-Empire).cbr',
-                                type: 'file',
-                                size: 44475896
-                                }
-                            ],
-                            name: 'dc events',
-                            path: 'files/dc events',
-                            type: 'folder'
-                        }
-                    ],
-                    name: 'files',
-                    path: 'files',
-                    type: 'folder'
-                }]
+        computed: {
+            files () {
+                return this.$store.state.files
             }
         },
         methods: {
             scan: function() {
+                var self = this;
                 $.get('/scan').then(response => {
-                    this.files = [response];
+                    $.each(response.items, function (key, value) {
+                        self.$store.commit('addFiles', value);
+                    });
                 });
             }
         },

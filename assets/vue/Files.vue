@@ -22,11 +22,9 @@
             Folder,
             File
         },
-        props: ['propFiles'],
         data: function () {
             return {
                 empty: true,
-                scannedFiles: this.propFiles[0].items,
                 files: [],
                 folders: []
             }
@@ -53,7 +51,8 @@
             }
         },
         created: function () {
-            var data = this.parseData(this.scannedFiles);
+            var files = this.$store.getters.getFiles,
+                data  = this.parseData(files);
             this.files = data.files;
             this.folders = data.folders;
             this.empty = (0 == this.files.length && 0 == this.folders.length);
