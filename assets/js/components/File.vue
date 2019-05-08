@@ -1,9 +1,9 @@
 <template>
     <li @click.stop.prevent="read" class="files">
-        <a :href="file.path" :title="file.path" class="files">
-            <span :class="file.icon"></span>
-            <span class="name">{{ file.name }}</span>
-            <span class="details">{{ file.size }}</span>
+        <a :href="path" :title="path" class="files">
+            <span :class="icon"></span>
+            <span class="name">{{ name }}</span>
+            <span class="details">{{ size }}</span>
         </a>
     </li>
 </template>
@@ -13,15 +13,13 @@
         props: ['propFile'],
         data: function () {
             return {
-                file: {
-                    id: '',
-                    path: '',
-                    type: '',
-                    fileType: '',
-                    icon: '',
-                    name: '',
-                    size: 0
-                }
+                id: '',
+                path: '',
+                type: '',
+                fileType: '',
+                icon: '',
+                name: '',
+                size: 0
             }
         },
         methods: {
@@ -48,14 +46,14 @@
             }
         },
         created: function () {
-            this.file.id = this.propFile.id;
-            this.file.path = this.propFile.path;
-            this.file.type = this.propFile.type;
-            this.file.size = this.bytesToSize(this.propFile.size);
-            this.file.name = this.escapeHTML(this.propFile.name);
-            this.file.fileType = this.file.name.split('.');
-            this.file.fileType = [this.file.fileType.length - 1];
-            this.file.icon = 'icon file f-' + this.file.fileType;
+            this.id = this.propFile.id;
+            this.path = this.propFile.path;
+            this.type = this.propFile.type;
+            this.size = this.bytesToSize(this.propFile.size);
+            this.name = this.escapeHTML(this.propFile.name);
+            this.fileType = this.name.split('.');
+            this.fileType = [this.fileType.length - 1];
+            this.icon = 'icon file f-' + this.fileType;
         }
     }
 </script>

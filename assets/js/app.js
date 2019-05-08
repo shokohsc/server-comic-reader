@@ -10,31 +10,9 @@ require('../css/app.css');
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 const $ = require('jquery');
-
-import App from '../vue/App.vue';
+import store from './store/index.js';
+import App from './components/App.vue';
 import Vue from 'vue';
-import Vuex from 'vuex';
-
-Vue.use(Vuex);
-
-const store = new Vuex.Store({
-    state: {
-        files: []
-    },
-    getters: {
-        getFiles: state => {
-            return state.files;
-        },
-        getFilesInFolder: (state) => (folder) => {
-            return state.files.find(files => files.name === folder)
-        }
-    },
-    mutations: {
-        addFiles(state, payload) {
-            state.files.push(payload);
-        }
-    }
-});
 
 /**
  * Create a fresh Vue Application instance

@@ -6,8 +6,8 @@
         </div>
         <div v-else>
             <ul class="data">
-                <File :propFile="file" v-for="file in files" :key="file.id"></File>
                 <Folder :propFolder="folder" v-for="folder in folders" :key="folder.id"></Folder>
+                <File :propFile="file" v-for="file in files" :key="file.id"></File>
             </ul>
         </div>
     </div>
@@ -50,12 +50,14 @@
                 };
             }
         },
-        created: function () {
-            var files = this.$store.getters.getFiles,
-                data  = this.parseData(files);
-            this.files = data.files;
-            this.folders = data.folders;
-            this.empty = (0 == this.files.length && 0 == this.folders.length);
+        created: function (data) {
+            var files = this.$store.getters['files/files'];
+            if (files.hasOwnProperty('files') && 0 < files.files.length) {
+                var data = this.parseData(files.files[0].items);
+                this.files = data.files;
+                this.folders = data.folders;
+                this.empty = (0 == this.files.length && 0 == this.folders.length);
+            }
         }
     }
 </script>

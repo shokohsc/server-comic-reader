@@ -1,21 +1,15 @@
 <template>
     <div class="breadcrumbs">
-        <div v-for="folder in previous">
-            <span @click="browse" class="folderName">{{ folder.name }}</span>
-            <span class="arrow">→</span>
-        </div>
+        <span v-for="folder in previous" @click="browse" class="folderName">{{ folder.name }} / </span>
         <span class="folderName">{{ last }}</span>
     </div>
 </template>
 
 <script>
     export default {
-        props: ['propFiles'],
         data: function () {
             return {
-                path: '',
-                urls: [],
-                files: this.propFiles,
+                files: [],
                 previous: [],
                 last: ''
             }
@@ -26,7 +20,7 @@
                     var $target = $(event.target);
                     var index = $target.find('a').index($target),
                         nextDir = $target[index];
-                    this.urls.length = Number(index);
+                    // this.urls.length = Number(index);
                     window.location.hash = encodeURIComponent(nextDir);
                 }
             },
@@ -38,36 +32,29 @@
                     if (hash[0] === 'search') {
                         rendered = parseData(this.files);
                         if (rendered.length) {
-                            this.path = hash[0];
+                            this.$store.commit('router/setPath', hash[0]);
                             this.render(rendered);
                         } else {
                             this.render(rendered);
                         }
                     // if hash is some path
                     } else if (hash[0].trim().length) {
-                        rendered = this.searchByPath(hash[0]);
-                        if (rendered.length) {
-                            this.path = hash[0];
-                            this.urls = this.generateBreadcrumbs(hash[0]);
-                            this.render(rendered);
-                        } else {
-                            this.path = hash[0];
-                            this.urls = this.generateBreadcrumbs(hash[0]);
-                            this.render(rendered);
-                        }
+                        this.$store.commit('router/setPath', hash[0]);
+                        this.$store.commit('router/setUrls', this.generateBreadcrumbs(hash[0]));
+                        this.render(this.searchByPath(hash[0]));
                     // if there is no hash
                     } else {
-                        this.path = this.files[0].path;
-                        this.urls.push(this.path);
-                        this.render(this.searchByPath(this.path));
+                        this.$store.commit('router/setPath', this.files[0].path);
+                        this.$store.commit('router/addUrl', this.files[0].path);
+                        this.render(this.searchByPath(this.$store.getters['router/path']));
                     }
                 }
             },
             render: function (data) {
                 var self = this;
-                this.urls.forEach(function (u, i) {
+                this.$store.getters['router/urls'].forEach(function (u, i) {
                     var name = u.split('/');
-                    if (i !== self.urls.length - 1) {
+                    if (i !== self.$store.getters['router/urls'].length - 1) {
                         self.previous.push({
                             path: u,
                             name: name[name.length - 1]
@@ -79,7 +66,7 @@
             },
             searchByPath: function (dir) {
                 var path = dir.split('/'),
-                    demo = this.propFiles,
+                    demo = this.files,
                     flag = 0;
 
                 for(var i = 0; i < path.length; i++){
@@ -123,7 +110,11 @@
             }
         },
         created: function() {
-            this.goto(window.location.hash);
+            var files = this.$store.getters['files/files'];
+            if (files.hasOwnProperty('files') && 0 < files.files.length) {
+                this.files = files.files;
+                this.goto(window.location.hash);
+            }
         }
     }
 </script>

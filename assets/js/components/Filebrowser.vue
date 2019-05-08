@@ -1,8 +1,8 @@
 <template>
     <div class="filemanager">
-        <Search :initialFiles="files"></Search>
-        <Breadcrumb :propFiles="files"></Breadcrumb>
-        <Files></Files>
+        <Search :key="key + '-search'"></Search>
+        <Breadcrumb :key="key + '-breadcrumb'"></Breadcrumb>
+        <Files :key="key + '-files'"></Files>
     </div>
 </template>
 
@@ -17,23 +17,26 @@
             Files,
             Search
         },
-        computed: {
-            files () {
-                return this.$store.state.files
+        data: function () {
+            return {
+                key: 0,
             }
         },
         methods: {
-            scan: function() {
-                var self = this;
-                $.get('/scan').then(response => {
-                    $.each(response.items, function (key, value) {
-                        self.$store.commit('addFiles', value);
-                    });
-                });
+            forceRerender() {
+                this.key += 1
             }
         },
         created: function () {
-            this.scan();
+            this.$store.dispatch('files/scan')
+            .then((response) => {
+                this.$store.commit('files/setFiles', { files: [response] });
+                this.forceRerender();
+            })
+            .catch((error) => {
+                this.$store.commit('files/resetFiles');
+                this.forceRerender();
+            });
         }
     }
 </script>

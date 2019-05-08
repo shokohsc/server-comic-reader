@@ -1,9 +1,9 @@
 <template>
     <li @click.stop.prevent="browse" class="folders">
-        <a :href="folder.path" :title="folder.path" class="folders">
-            <span :class="folder.class"></span>
-            <span class="name">{{ folder.name }}</span>
-            <span class="details">{{ folder.itemsLength }}</span>
+        <a :href="path" :title="path" class="folders">
+            <span :class="iconClass"></span>
+            <span class="name">{{ name }}</span>
+            <span class="details">{{ itemsLength }}</span>
         </a>
     </li>
 </template>
@@ -13,22 +13,22 @@
         props: ['propFolder'],
         data: function () {
             return {
-                folder: {
-                    id: '',
-                    path: '',
-                    type: '',
-                    class: '',
-                    name: '',
-                    itemsLength: 'Empty',
-                    items: []
-                }
+                id: '',
+                path: '',
+                type: '',
+                iconClass: '',
+                name: '',
+                itemsLength: 'Empty',
+                items: []
             }
         },
         methods: {
             browse: function (event) {
                 if (event) {
                     var $target = $(event.target);
-                    window.location.hash = encodeURIComponent($target.attr('href'));
+                    var path = encodeURIComponent($target.attr('href'));
+                    window.location.hash = path;
+                    this.$store.commit('routes/setPath', path);
                 }
             },
             escapeHTML: function (text) {
@@ -36,18 +36,18 @@
             }
         },
         created: function () {
-            this.folder.id = this.propFolder.id;
-            this.folder.path = this.propFolder.path;
-            this.folder.type = this.propFolder.type;
-            this.folder.items = this.propFolder.items;
-            this.folder.name = this.escapeHTML(this.propFolder.name);
-            this.folder.class = 'icon folder';
+            this.id = this.propFolder.id;
+            this.path = this.propFolder.path;
+            this.type = this.propFolder.type;
+            this.items = this.propFolder.items;
+            this.name = this.escapeHTML(this.propFolder.name);
+            this.iconClass = 'icon folder';
             if (0 < this.propFolder.items.length) {
-                this.folder.class = 'icon folder full';
-                this.folder.itemsLength = this.propFolder.items.length + ' items';
+                this.iconClass = 'icon folder full';
+                this.itemsLength = this.propFolder.items.length + ' items';
             }
             if (1 == this.propFolder.items.length) {
-                this.folder.itemsLength = '1 item';
+                this.itemsLength = '1 item';
             }
         }
     }
