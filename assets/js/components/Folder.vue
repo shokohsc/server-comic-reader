@@ -28,7 +28,9 @@
                     var $target = $(event.target);
                     var path = encodeURIComponent($target.attr('href'));
                     window.location.hash = path;
-                    this.$store.commit('routes/setPath', path);
+                    this.$store.commit('router/setPath', path);
+                    this.$store.commit('files/setFiles', this.propFolder.items);
+                    this.$store.commit('router/setKey', { key: this.propFolder.id });
                 }
             },
             escapeHTML: function (text) {

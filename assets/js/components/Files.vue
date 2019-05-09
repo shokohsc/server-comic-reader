@@ -22,15 +22,19 @@
             Folder,
             File
         },
-        data: function () {
-            return {
-                empty: true,
-                files: [],
-                folders: []
+        computed: {
+            files: function() {
+                return this.extractDataProperty('files');
+            },
+            folders: function() {
+                return this.extractDataProperty('folders');
+            },
+            empty: function() {
+                return (0 == this.files.length && 0 == this.folders.length);
             }
         },
         methods: {
-            parseData: function (data) {
+            parseData: function(data) {
                 var self    = this,
                     files   = [],
                     folders = [];
@@ -48,15 +52,11 @@
                     folders: folders,
                     files: files
                 };
-            }
-        },
-        created: function (data) {
-            var files = this.$store.getters['files/files'];
-            if (files.hasOwnProperty('files') && 0 < files.files.length) {
-                var data = this.parseData(files.files[0].items);
-                this.files = data.files;
-                this.folders = data.folders;
-                this.empty = (0 == this.files.length && 0 == this.folders.length);
+            },
+            extractDataProperty: function(property) {
+                var data = this.parseData(this.$store.getters['files/files']);
+
+                return data.hasOwnProperty(property) ? data[property] : [];
             }
         }
     }

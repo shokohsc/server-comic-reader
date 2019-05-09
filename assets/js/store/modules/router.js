@@ -2,12 +2,16 @@ import reader from '../../api/reader'
 
 // initial state
 const state = {
+    key: 0,
     path: '',
     urls: []
 }
 
 // getters
 const getters = {
+    key: state => {
+        return state.key;
+    },
     path: state => {
         return state.path;
     },
@@ -18,6 +22,12 @@ const getters = {
 
 // mutations
 const mutations = {
+    setKey(state, key) {
+        state.key = key;
+    },
+    resetKey(state) {
+        state.key = 0;
+    },
     setPath(state, path) {
         state.path = path;
     },

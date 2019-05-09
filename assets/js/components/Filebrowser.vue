@@ -17,25 +17,20 @@
             Files,
             Search
         },
-        data: function () {
-            return {
-                key: 0,
-            }
-        },
-        methods: {
-            forceRerender() {
-                this.key += 1
+        computed: {
+            key: function() {
+                return this.$store.getters['router/key'].key;
             }
         },
         created: function () {
             this.$store.dispatch('files/scan')
             .then((response) => {
-                this.$store.commit('files/setFiles', { files: [response] });
-                this.forceRerender();
+                this.$store.commit('files/setFiles', [response]);
+                this.$store.commit('router/setKey', { key: response.id });
             })
             .catch((error) => {
                 this.$store.commit('files/resetFiles');
-                this.forceRerender();
+                this.$store.commit('router/resetKey');
             });
         }
     }

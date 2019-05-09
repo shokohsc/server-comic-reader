@@ -1,6 +1,11 @@
 <template>
     <div class="breadcrumbs">
-        <span v-for="folder in previous" @click="browse" class="folderName">{{ folder.name }} / </span>
+        <div v-for="folder in previous" @click.stop.prevent="browse" class="inline">
+            <a :href="folder.path" :title="folder.path">
+                <span class="folderName">{{ folder.name }}</span>
+            </a>
+            <span class="arrow">→</span>
+        </div>
         <span class="folderName">{{ last }}</span>
     </div>
 </template>
@@ -9,9 +14,13 @@
     export default {
         data: function () {
             return {
-                files: [],
                 previous: [],
                 last: ''
+            }
+        },
+        computed: {
+            files: function() {
+                return this.$store.getters['files/files'];
             }
         },
         methods: {
@@ -50,7 +59,7 @@
                     }
                 }
             },
-            render: function (data) {
+            render: function () {
                 var self = this;
                 this.$store.getters['router/urls'].forEach(function (u, i) {
                     var name = u.split('/');
@@ -110,16 +119,16 @@
             }
         },
         created: function() {
-            var files = this.$store.getters['files/files'];
-            if (files.hasOwnProperty('files') && 0 < files.files.length) {
-                this.files = files.files;
-                this.goto(window.location.hash);
-            }
+            this.goto(window.location.hash);
         }
     }
 </script>
 
 <style>
+.inline {
+    display: inline;
+}
+
 .filemanager .breadcrumbs {
 	color: #ffffff;
 	margin-left:20px;
