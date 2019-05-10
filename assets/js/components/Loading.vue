@@ -21,11 +21,6 @@
 </div>
 </template>
 
-<script>
-    import Vue from 'vue';
-    export default class Loading extends Vue {}
-</script>
-
 <style>
 .spinner {
     margin: 100px auto;

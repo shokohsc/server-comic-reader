@@ -51,7 +51,7 @@
                 this.itemsLength = '1 item';
             }
         }
-    }
+    };
 </script>
 
 <style>

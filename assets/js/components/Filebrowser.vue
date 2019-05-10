@@ -22,7 +22,7 @@
                 return this.$store.getters['router/key'].key;
             }
         }
-    }
+    };
 </script>
 
 <style>

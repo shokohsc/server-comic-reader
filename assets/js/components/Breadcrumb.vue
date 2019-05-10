@@ -130,7 +130,7 @@
         created: function() {
             this.goto(window.location.hash);
         }
-    }
+    };
 </script>
 
 <style>

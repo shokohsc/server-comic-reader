@@ -55,7 +55,7 @@
             this.fileType = [this.fileType.length - 1];
             this.icon = 'icon file f-' + this.fileType;
         }
-    }
+    };
 </script>
 
 <style>

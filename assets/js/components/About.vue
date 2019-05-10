@@ -28,5 +28,5 @@
                 return age.toString();
             }
         }
-    }
+    };
 </script>

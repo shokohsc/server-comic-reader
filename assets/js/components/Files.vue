@@ -59,7 +59,7 @@
                 return data.hasOwnProperty(property) ? data[property] : [];
             }
         }
-    }
+    };
 </script>
 
 <style>

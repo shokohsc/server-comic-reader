@@ -6,14 +6,18 @@
 </template>
 
 <script>
-    import Error from './Error.vue';
     import Filebrowser from './Filebrowser.vue';
+    import Error from './Error.vue';
     import Loading from './Loading.vue';
-    import Vue from 'vue';
 
     export default {
+        components: {
+            Filebrowser
+        },
         created: function() {
+            console.log(Loading);
             var loading = new Loading();
+            console.log(loading);
             loading.$mount('#content');
 
             this.$store.dispatch('files/scan')
@@ -30,5 +34,5 @@
                 error.$mount('#content')
             });
         }
-    }
+    };
 </script>
