@@ -10,16 +10,13 @@ const getters = {
     files: state => {
         return state.files;
     },
-    getFilesInFolder: (state) => (folder) => {
-        console.log('folder', folder);
+    getFilesInFolderKey: (state, getters) => (key) => {
         return state.files.find((element) => {
-            if (element.path === folder && 'folder' === element.type) {
-                console.log('files', element);
+            if (element.id === key && 'folder' === element.type) {
                 return element;
             }
-            if (element.path !== folder && 'folder' === element.type) {
-                console.log('files', element);
-                return this.getFilesInFolder(folder);
+            if (element.id !== key && 'folder' === element.type) {
+                return getters.getFilesInFolderKey(element.id);
             }
         });
     }

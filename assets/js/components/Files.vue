@@ -54,7 +54,14 @@
                 };
             },
             extractDataProperty: function(property) {
-                var data = this.parseData(this.$store.getters['files/files']);
+                var key = this.$store.getters['router/key'];
+                var files = this.$store.getters['files/getFilesInFolderKey'](key);
+                if (Array.isArray(files) && 0 < files.length) {
+                    files = files[0].items;
+                } else if ('object' === typeof files && files.hasOwnProperty('items')) {
+                    files = files.items;
+                }
+                var data = this.parseData(files);
 
                 return data.hasOwnProperty(property) ? data[property] : [];
             }
