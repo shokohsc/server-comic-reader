@@ -1,7 +1,7 @@
 <template>
     <div class="breadcrumbs">
-        <div v-for="folder in previous" @click.stop.prevent="browse" class="inline">
-            <a :href="folder.path" :title="folder.path">
+        <div v-for="folder in previous" @click.capture="browse" class="inline">
+            <a @click.stop.prevent :href="folder.path" :title="folder.path">
                 <span class="folderName">{{ folder.name }}</span>
             </a>
             <span class="arrow">→</span>
@@ -26,10 +26,19 @@
         methods: {
             browse: function (event) {
                 if (event) {
-                    var $target = $(event.target);
-                    var index = $target.find('a').index($target),
-                        nextDir = $target[index];
-                    // this.urls.length = Number(index);
+                    var folder = event.target.textContent,
+                        urls = this.$store.getters['router/urls'],
+                        nextDir = '';
+
+                    for (var i = 0; i < urls.length; i++) {
+                        var condition = (0 <= urls[i].search(folder));
+                        if (condition) {
+                            nextDir = urls[i];
+                            console.log(this.$store.getters['files/getFilesInFolder'](nextDir));
+                            break;
+                        }
+                    }
+
                     window.location.hash = encodeURIComponent(nextDir);
                 }
             },

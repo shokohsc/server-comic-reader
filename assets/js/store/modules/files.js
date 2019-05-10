@@ -9,6 +9,19 @@ const state = {
 const getters = {
     files: state => {
         return state.files;
+    },
+    getFilesInFolder: (state) => (folder) => {
+        console.log('folder', folder);
+        return state.files.find((element) => {
+            if (element.path === folder && 'folder' === element.type) {
+                console.log('files', element);
+                return element;
+            }
+            if (element.path !== folder && 'folder' === element.type) {
+                console.log('files', element);
+                return this.getFilesInFolder(folder);
+            }
+        });
     }
 }
 
@@ -16,10 +29,6 @@ const getters = {
 const actions = {
     scan({ commit }) {
         return reader.scan();
-        // reader.scan(
-        //     (files) => commit('setFiles', { files: [files] }),
-        //     () => commit('resetFiles')
-        // )
     }
 }
 

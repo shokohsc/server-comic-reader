@@ -21,17 +21,6 @@
             key: function() {
                 return this.$store.getters['router/key'].key;
             }
-        },
-        created: function () {
-            this.$store.dispatch('files/scan')
-            .then((response) => {
-                this.$store.commit('files/setFiles', [response]);
-                this.$store.commit('router/setKey', { key: response.id });
-            })
-            .catch((error) => {
-                this.$store.commit('files/resetFiles');
-                this.$store.commit('router/resetKey');
-            });
         }
     }
 </script>
