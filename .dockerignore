@@ -1,0 +1,14 @@
+.git
+/public/files/*
+/script
+/tests
+.env.test
+.dockerignore
+.gitignore
+.gitlab-ci.yml
+composer.json
+composer.lock
+Dockerfile
+phpunit.xml.dist
+README.md
+.DS_Store

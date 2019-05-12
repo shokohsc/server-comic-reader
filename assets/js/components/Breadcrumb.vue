@@ -6,7 +6,9 @@
             </a>
             <span class="arrow">→</span>
         </div>
-        <span class="folderName">{{ last }}</span>
+        <div class="inline">
+            <span class="folderName">{{ last }}</span>
+        </div>
     </div>
 </template>
 

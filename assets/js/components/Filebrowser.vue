@@ -1,6 +1,6 @@
 <template>
     <div class="filemanager">
-        <Search></Search>
+        <!-- <Search></Search> -->
         <Breadcrumb></Breadcrumb>
         <Files></Files>
     </div>

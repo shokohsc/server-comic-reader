@@ -108,7 +108,7 @@
 	font-size: 15px;
 	font-weight: 700;
 	line-height: 20px;
-	width: 150px;
+	width: 55%;
 	white-space: nowrap;
 	display: inline-block;
 	position: absolute;
