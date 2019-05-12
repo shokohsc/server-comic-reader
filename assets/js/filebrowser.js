@@ -1,6 +1,6 @@
 $(function(){
 
-  var filemanager = $('.filemanager'),
+  let filemanager = $('.filemanager'),
       breadcrumbs = $('.breadcrumbs'),
       fileList = filemanager.find('.data');
 
@@ -8,11 +8,11 @@ $(function(){
 
   $.get('/scan', function(data) {
 
-      var response = [data],
+      let response = [data],
           currentPath = '',
           breadcrumbsUrls = [];
 
-      var folders = [],
+      let folders = [],
           files = [];
 
       // This event listener monitors changes on the URL. We use it to
@@ -32,7 +32,7 @@ $(function(){
 
       filemanager.find('.search').click(function(){
 
-          var search = $(this);
+          let search = $(this);
 
           search.find('span').hide();
           search.find('input[type=search]').show().focus();
@@ -49,7 +49,7 @@ $(function(){
           folders = [];
           files = [];
 
-          var value = this.value.trim();
+          let value = this.value.trim();
 
           if(value.length) {
 
@@ -71,7 +71,7 @@ $(function(){
 
           // Clicking 'ESC' button triggers focusout and cancels the search
 
-          var search = $(this);
+          let search = $(this);
 
           if(e.keyCode == 27) {
 
@@ -83,7 +83,7 @@ $(function(){
 
           // Cancel the search
 
-          var search = $(this);
+          let search = $(this);
 
           if(!search.val().trim().length) {
 
@@ -101,7 +101,7 @@ $(function(){
       fileList.on('click', 'li.folders', function(e){
           e.preventDefault();
 
-          var nextDir = $(this).find('a.folders').attr('href');
+          let nextDir = $(this).find('a.folders').attr('href');
 
           if(filemanager.hasClass('searching')) {
 
@@ -136,20 +136,20 @@ $(function(){
 
       function displayGallery(data)
       {
-          var pswpElement = document.querySelectorAll('.pswp')[0];
+          let pswpElement = document.querySelectorAll('.pswp')[0];
           // build items array
-          var items = [];
+          let items = [];
           $.each(data, function(index, image) {
               items.push({'src': 'data:' + image.type + ';base64,' + image.image, 'h': image.height, 'w': image.width});
           });
 
           // define options (if needed)
-          var options = {
+          let options = {
               index: 0 // start at first slide
           };
 
           // Initializes and opens PhotoSwipe
-          var pswp = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+          let pswp = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
 
           pswp.init();
       }
@@ -160,7 +160,7 @@ $(function(){
       breadcrumbs.on('click', 'a', function(e){
           e.preventDefault();
 
-          var index = breadcrumbs.find('a').index($(this)),
+          let index = breadcrumbs.find('a').index($(this)),
               nextDir = breadcrumbsUrls[index];
 
           breadcrumbsUrls.length = Number(index);
@@ -177,7 +177,7 @@ $(function(){
           hash = decodeURIComponent(hash).slice(1).split('=');
 
           if (hash.length) {
-              var rendered = '';
+              let rendered = '';
 
               // if hash has search in it
 
@@ -230,8 +230,8 @@ $(function(){
       // Splits a file path and turns it into clickable breadcrumbs
 
       function generateBreadcrumbs(nextDir){
-          var path = nextDir.split('/').slice(0);
-          for(var i=1;i<path.length;i++){
+          let path = nextDir.split('/').slice(0);
+          for(let i=1;i<path.length;i++){
               path[i] = path[i-1]+ '/' +path[i];
           }
           return path;
@@ -241,12 +241,12 @@ $(function(){
       // Locates a file by path
 
       function searchByPath(dir) {
-          var path = dir.split('/'),
+          let path = dir.split('/'),
               demo = response,
               flag = 0;
 
-          for(var i=0;i<path.length;i++){
-              for(var j=0;j<demo.length;j++){
+          for(let i=0;i<path.length;i++){
+              for(let j=0;j<demo.length;j++){
                   if(demo[j].name === path[i]){
                       flag = 1;
                       demo = demo[j].items;
@@ -287,7 +287,7 @@ $(function(){
 
       function render(data) {
 
-          var scannedFolders = [],
+          let scannedFolders = [],
               scannedFiles = [];
 
           if(Array.isArray(data)) {
@@ -327,7 +327,7 @@ $(function(){
 
               scannedFolders.forEach(function(f) {
 
-                  var itemsLength = f.items.length,
+                  let itemsLength = f.items.length,
                       name = escapeHTML(f.name),
                       icon = '<span class="icon folder"></span>';
 
@@ -345,7 +345,7 @@ $(function(){
                       itemsLength = 'Empty';
                   }
 
-                  var folder = $('<li class="folders"><a href="'+ f.path +'" title="'+ f.path +'" class="folders">'+icon+'<span class="name">' + name + '</span> <span class="details">' + itemsLength + '</span></a></li>');
+                  let folder = $('<li class="folders"><a href="'+ f.path +'" title="'+ f.path +'" class="folders">'+icon+'<span class="name">' + name + '</span> <span class="details">' + itemsLength + '</span></a></li>');
                   folder.appendTo(fileList);
               });
 
@@ -355,7 +355,7 @@ $(function(){
 
               scannedFiles.forEach(function(f) {
 
-                  var fileSize = bytesToSize(f.size),
+                  let fileSize = bytesToSize(f.size),
                       name = escapeHTML(f.name),
                       fileType = name.split('.'),
                       icon = '<span class="icon file"></span>';
@@ -364,7 +364,7 @@ $(function(){
 
                   icon = '<span class="icon file f-'+fileType+'">.'+fileType+'</span>';
 
-                  var file = $('<li class="files"><a href="'+ f.path+'" title="'+ f.path +'" class="files">'+icon+'<span class="name">'+ name +'</span> <span class="details">'+fileSize+'</span></a></li>');
+                  let file = $('<li class="files"><a href="'+ f.path+'" title="'+ f.path +'" class="files">'+icon+'<span class="name">'+ name +'</span> <span class="details">'+fileSize+'</span></a></li>');
                   file.appendTo(fileList);
               });
 
@@ -373,7 +373,7 @@ $(function(){
 
           // Generate the breadcrumbs
 
-          var url = '';
+          let url = '';
 
           if(filemanager.hasClass('searching')){
 
@@ -387,7 +387,7 @@ $(function(){
 
               breadcrumbsUrls.forEach(function (u, i) {
 
-                  var name = u.split('/');
+                  let name = u.split('/');
 
                   if (i !== breadcrumbsUrls.length - 1) {
                       url += '<a href="'+u+'"><span class="folderName">' + name[name.length-1] + '</span></a> <span class="arrow">→</span> ';
@@ -420,9 +420,9 @@ $(function(){
       // Convert file sizes from bytes to human readable units
 
       function bytesToSize(bytes) {
-          var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+          let sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
           if (bytes == 0) return '0 Bytes';
-          var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+          let i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
           return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
       }
 

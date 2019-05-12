@@ -35,7 +35,10 @@ const mutations = {
         state.path = '';
     },
     addUrl(state, url) {
-        state.urls.push(url);
+        let found = state.urls.find(element => element === url);
+        if (undefined === found) {
+            state.urls.push(url);
+        }
     },
     setUrls(state, urls) {
         state.urls = urls;

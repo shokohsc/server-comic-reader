@@ -14,6 +14,9 @@ import store from './store/index.js';
 import App from './components/App.vue';
 import Vue from 'vue';
 
+// EventBus
+Vue.prototype.$eventBus = new Vue();
+
 /**
  * Create a fresh Vue Application instance
  */

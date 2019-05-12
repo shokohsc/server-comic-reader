@@ -49,7 +49,7 @@ class ScanDirectoryService
             $name = $file->getRelativePathname();
             if (is_dir($file->getRealPath())) {
                 $files[] = [
-                    'id' => md5($name),
+                    'id' => base64_encode($path),
                     'name' => $name,
                     'type' => 'folder',
                     'path' => $path,
@@ -57,7 +57,7 @@ class ScanDirectoryService
                 ];
             } else {
                 $files[] = array(
-                    'id' => md5($name),
+                    'id' => base64_encode($path),
                     'name' => $name,
                     'type' => 'file',
                     'path' => $path,

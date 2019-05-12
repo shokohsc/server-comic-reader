@@ -14,15 +14,15 @@
         methods: {
             toggle: function(event) {
                 if (event) {
-                    var $target = $(event.target);
+                    let $target = $(event.target);
                     $target.find('span').hide();
                     $target.find('input[type=search]').show().focus();
                 }
             },
             search: function(event) {
                 if (event) {
-                    var target = $(event.target)[0];
-                    var value  = target.value.trim();
+                    let target = $(event.target)[0];
+                    let value  = target.value.trim();
 
                     window.location.hash = encodeURIComponent(this.currentPath);
                     if (value.length) {
@@ -32,7 +32,7 @@
             },
             clear: function(event) {
                 if (event) {
-                    var target = $(event.target)[0];
+                    let target = $(event.target)[0];
 
                     if (!target.value.trim().length) {
                         window.location.hash = encodeURIComponent(this.currentPath);

@@ -10,21 +10,41 @@ const getters = {
     files: state => {
         return state.files;
     },
-    getFilesInFolderKey: (state, getters) => (key) => {
-        return state.files.find((element) => {
-            if (element.id === key && 'folder' === element.type) {
-                return element;
-            }
-            if (element.id !== key && 'folder' === element.type) {
-                return getters.getFilesInFolderKey(element.id);
-            }
-        });
+    filesInFolderWithId: (state, getters) => id => {
+        const folders = (files) => files.filter(file => file.type === 'folder');
+        const search = (files, id) => {
+            return folders(files).find(file => {
+                if (file.id === id) {
+                    found = file;
+                }
+                return file.id === id || search(file.items, id);
+            });
+        };
+        let found = getters.files;
+        search(getters.files, id);
+
+        return found.items;
+    },
+    folderWithId: (state, getters) => id => {
+        const folders = (files) => files.filter(file => file.type === 'folder');
+        const search = (files, id) => {
+            return folders(files).find(file => {
+                if (file.id === id) {
+                    found = file;
+                }
+                return file.id === id || search(file.items, id);
+            });
+        };
+        let found = getters.files;
+        search(getters.files, id);
+
+        return found;
     }
 }
 
 // actions
 const actions = {
-    scan({ commit }) {
+    scan() {
         return reader.scan();
     }
 }

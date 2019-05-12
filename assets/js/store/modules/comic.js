@@ -2,24 +2,27 @@ import reader from '../../api/reader'
 
 // initial state
 const state = {
-    comic: {}
+    comic: [],
+    index: 0,
 }
 
 // getters
 const getters = {
     comic: state => {
         return state.comic;
+    },
+    index: state => {
+        return state.index;
+    },
+    page: state => {
+        return state.comic[state.index];
     }
 }
 
 // actions
 const actions = {
-    read({ commit }, path) {
+    read({}, path) {
         return reader.read(path);
-        // reader.read(
-        //     (path) => commit('setComic', { comic: comic }),
-        //     () => commit('resetComic')
-        // )
     }
 }
 
@@ -29,7 +32,25 @@ const mutations = {
         state.comic = comic;
     },
     resetComic(state) {
-        state.comic = {};
+        state.comic = [];
+    },
+    setIndex(state, index) {
+        state.index = index;
+    },
+    increaseIndex(state) {
+        const index = state.index += (state.index < state.comic.length) ? 1 : 0;
+        this.commit('comic/setIndex', index);
+    },
+    decreaseIndex(state) {
+        const index = state.index -= (state.index > 0) ? 1 : 0;
+        this.commit('comic/setIndex', index);
+    },
+    resetIndex(state) {
+        state.index = 0;
+    },
+    reset(state) {
+        this.commit('comic/resetComic');
+        this.commit('comic/resetIndex');
     }
 }
 

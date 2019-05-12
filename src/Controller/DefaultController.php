@@ -28,7 +28,7 @@ class DefaultController extends AbstractController
     {
         return new JsonResponse(
             [
-                'id' => md5('files'),
+                'id' => base64_encode('files'),
                 'name' => 'files',
                 'type' => 'folder',
                 'path' => 'files',

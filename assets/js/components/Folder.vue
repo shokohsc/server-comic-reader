@@ -25,11 +25,9 @@
         methods: {
             browse: function (event) {
                 if (event) {
-                    var $target = $(event.target);
-                    var path = encodeURIComponent($target.attr('href'));
-                    window.location.hash = path;
-                    this.$store.commit('router/setPath', path);
-                    this.$store.commit('router/setKey', { key: this.propFolder.id });
+                    this.$store.commit('router/setPath', encodeURIComponent(this.path));
+                    this.$store.commit('router/addUrl', this.path);
+                    this.$store.commit('router/setKey', this.id);
                 }
             },
             escapeHTML: function (text) {

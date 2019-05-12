@@ -49,7 +49,7 @@ class ReaderService
      */
     public function read(string $path)
     {
-        $comic = $this->provider->get(md5($path));
+        $comic = $this->provider->get(base64_encode($path));
         if (null !== $comic) {
             return $this->format($comic->getPages());
         }
@@ -70,7 +70,7 @@ class ReaderService
 
         $comic = (new Comic)
             ->setPath($path)
-            ->setHash(md5($path))
+            ->setHash(base64_encode($path))
         ;
 
         foreach ($pages as $page) {

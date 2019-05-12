@@ -35,18 +35,17 @@
         },
         methods: {
             parseData: function(data) {
-                var self    = this,
-                    files   = [],
+                let files   = [],
                     folders = [];
 
                 data.forEach(function(file){
                     if (file.type === 'folder') {
-                        self.parseData(file.items);
+                        this.parseData(file.items);
                         folders.push(file);
                     } else if (file.type === 'file') {
                         files.push(file);
                     }
-                });
+                }, this);
 
                 return {
                     folders: folders,
@@ -54,16 +53,10 @@
                 };
             },
             extractDataProperty: function(property) {
-                var key = this.$store.getters['router/key'];
-                var files = this.$store.getters['files/getFilesInFolderKey'](key);
-                if (Array.isArray(files) && 0 < files.length) {
-                    files = files[0].items;
-                } else if ('object' === typeof files && files.hasOwnProperty('items')) {
-                    files = files.items;
-                }
-                var data = this.parseData(files);
+                const id = this.$store.getters['router/key'];
+                const files = this.$store.getters['files/filesInFolderWithId'](id);
 
-                return data.hasOwnProperty(property) ? data[property] : [];
+                return this.parseData(files)[property];
             }
         }
     };

@@ -1,8 +1,8 @@
 <template>
     <div class="filemanager">
-        <Search :key="key + '-search'"></Search>
-        <Breadcrumb :key="key + '-breadcrumb'"></Breadcrumb>
-        <Files :key="key + '-files'"></Files>
+        <Search></Search>
+        <Breadcrumb></Breadcrumb>
+        <Files></Files>
     </div>
 </template>
 
@@ -16,11 +16,6 @@
             Breadcrumb,
             Files,
             Search
-        },
-        computed: {
-            key: function() {
-                return this.$store.getters['router/key'].key;
-            }
         }
     };
 </script>

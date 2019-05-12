@@ -25,20 +25,25 @@
         methods: {
             read: function (event) {
                 if (event) {
-                    var target = $(event.target)[0];
+                    this.$eventBus.$emit('loading-comic');
+                    let target = $(event.target)[0];
                     if (null != target.title.match(/files\/(.+)\.(cbr|cbz)$/gm)) {
-                        $.get('/read/' + encodeURIComponent(target.title), function(data) {
-                            if (0 < data.length) {
-                                displayGallery(data);
-                            }
+                        this.$store.dispatch('comic/read', encodeURIComponent(target.title))
+                        .then((response) => {
+                            this.$eventBus.$emit('display-comic', response);
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            this.$store.commit('comic/reset');
+                            this.$eventBus.$emit('close-comic');
                         });
                     }
                 }
             },
             bytesToSize: function (bytes) {
-                var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+                let sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
                 if (bytes == 0) return '0 Bytes';
-                var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+                let i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
                 return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
             },
             escapeHTML: function (text) {
