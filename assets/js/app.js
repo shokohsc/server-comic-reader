@@ -13,9 +13,12 @@ const $ = require('jquery');
 import store from './store/index.js';
 import App from './components/App.vue';
 import Vue from 'vue';
+import VueTouch from 'vue-touch';
 
 // EventBus
 Vue.prototype.$eventBus = new Vue();
+
+Vue.use(VueTouch);
 
 /**
  * Create a fresh Vue Application instance

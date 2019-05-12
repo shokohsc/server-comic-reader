@@ -1,6 +1,6 @@
 <template>
     <div @click="toggle" class="search">
-        <input @input="search" @keyup.27="clear" type="search" placeholder="Find a file.."/>
+        <input @input="search" @keyup.esc="clear" type="search" placeholder="Find a file.."/>
     </div>
 </template>
 

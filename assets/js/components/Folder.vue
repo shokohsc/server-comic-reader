@@ -28,6 +28,7 @@
                     this.$store.commit('router/setPath', encodeURIComponent(this.path));
                     this.$store.commit('router/addUrl', this.path);
                     this.$store.commit('router/setKey', this.id);
+                    window.location.hash = encodeURIComponent(this.path);
                 }
             },
             escapeHTML: function (text) {

@@ -1,10 +1,12 @@
 <template>
-    <div :style="{ height: height + 'px' }">
-        <div v-on:click="previousPage" class="left"></div>
-        <div v-on:click="close" class="center"></div>
-        <div v-on:click="nextPage" class="right"></div>
-        <img :src="image" :width="width" class="image"/>
-    </div>
+    <v-touch @swipeleft="nextPage" @swiperight="previousPage">
+        <div :style="{ height: height + 'px' }">
+            <div v-on:click="previousPage" class="left"></div>
+            <div v-on:click="close" class="center"></div>
+            <div v-on:click="nextPage" class="right"></div>
+            <img :src="image" :width="width" class="image"/>
+        </div>
+    </v-touch>
 </template>
 
 <script>
@@ -33,10 +35,33 @@
             },
             nextPage: function() {
                 this.$store.commit('comic/increaseIndex');
+                document.body.scrollTop = 0; // For Safari
+                document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
             },
             previousPage: function() {
                 this.$store.commit('comic/decreaseIndex');
+                document.body.scrollTop = 0; // For Safari
+                document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+            },
+            keyUp: function(event) {
+                switch (event.keyCode) {
+                    case 39:
+                        this.nextPage();
+                        break;
+                    case 27:
+                        this.close();
+                        break;
+                    case 37:
+                        this.previousPage();
+                        break;
+                }
             }
+        },
+        created: function() {
+            window.addEventListener('keyup', this.keyUp);
+        },
+        destroyed: function() {
+            window.removeEventListener('keyup', this.keyUp);
         }
     };
 </script>

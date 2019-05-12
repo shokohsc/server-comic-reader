@@ -38,7 +38,7 @@ const mutations = {
         state.index = index;
     },
     increaseIndex(state) {
-        const index = state.index += (state.index < state.comic.length) ? 1 : 0;
+        const index = state.index += (state.index < state.comic.length - 1) ? 1 : 0;
         this.commit('comic/setIndex', index);
     },
     decreaseIndex(state) {
