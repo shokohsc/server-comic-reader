@@ -5,36 +5,41 @@ namespace App\Controller;
 use App\Service\ReaderService;
 use App\Service\ScanDirectoryService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends AbstractController
 {
     /**
-      * @Route("/")
+      * @Route("/", methods={"GET"}))
+      * @Cache(expires="tomorrow", public=true)
       */
     public function index()
     {
-        return $this->render('index.html.twig');
+        return $this->render('base.html.twig');
     }
 
     /**
-      * @Route("/scan")
+      * @Route("/scan", methods={"GET"}))
+      * @Cache(expires="tomorrow", public=true)
       */
     public function scan(ScanDirectoryService $service): JsonResponse
     {
         return new JsonResponse(
             [
-                "name" => "files",
-                "type" => "folder",
-                "path" => 'files',
-                "items" => $service->scan($this->getParameter('kernel.project_dir') . '/public/files'),
+                'id' => base64_encode('files'),
+                'name' => 'files',
+                'type' => 'folder',
+                'path' => 'files',
+                'items' => $service->scan($this->getParameter('kernel.project_dir') . '/public/files'),
             ]
         );
     }
 
     /**
-     * @Route("/read/{path}", requirements={"path"=".+"})
+     * @Route("/read/{path}", requirements={"path"=".+"}, methods={"GET"}))
+     * @Cache(expires="tomorrow", public=true)
      */
     public function read(string $path, ReaderService $service)
     {

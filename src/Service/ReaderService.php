@@ -11,6 +11,8 @@ use Doctrine\Common\Collections\Selectable;
 
 class ReaderService
 {
+    const JPG_QUALITY = 60;
+
     /**
      * @var FactoryInterface
      */
@@ -47,12 +49,13 @@ class ReaderService
      *
      * @return array
      */
-    public function read(string $path)
+    public function read(string $path): array
     {
-        $comic = $this->provider->get(md5($path));
-        if (null !== $comic) {
-            return $this->format($comic->getPages());
-        }
+        // Removing database connection until a check is done ot sync files and database entries
+        // $comic = $this->provider->get(base64_encode($path));
+        // if (null !== $comic) {
+        //     return $this->format($comic->getPages());
+        // }
 
         return $this->save($path);
     }
@@ -63,14 +66,14 @@ class ReaderService
      * @return array
      *
      */
-    protected function save(string $path)
+    protected function save(string $path): array
     {
         $archive = $this->factory->build($path);
         $pages = $archive->extract($path);
 
         $comic = (new Comic)
             ->setPath($path)
-            ->setHash(md5($path))
+            ->setHash(base64_encode($path))
         ;
 
         foreach ($pages as $page) {
@@ -83,8 +86,8 @@ class ReaderService
             $comic->addPage($object);
         }
 
-        $this->manager->persist($comic);
-        $this->manager->flush();
+        // $this->manager->persist($comic);
+        // $this->manager->flush();
 
         return $this->format($comic->getPages());
     }
@@ -95,17 +98,48 @@ class ReaderService
      * @return array
      *
      */
-    protected function format(Selectable $collection)
+    protected function format(Selectable $collection): array
     {
         $output = [];
         foreach ($collection as $page) {
             $output[] = [
-                'image' => $page->getImage(),
+                'image' => $this->compress($page->getImage()),
                 'type' => $page->getType(),
                 'width' => $page->getWidth(),
                 'height' => $page->getHeight(),
             ];
         }
+
+        return $output;
+    }
+
+    /**
+     * @param  string $source
+     *
+     * @return string
+     */
+    protected function compress(string $source): string
+    {
+        $source = base64_decode($source);
+        $file = sys_get_temp_dir() .'/output';
+        file_put_contents($file, $source);
+        $info = getimagesize($file);
+
+        if ($info['mime'] == 'image/jpeg')
+            $image = imagecreatefromjpeg($file);
+
+        elseif ($info['mime'] == 'image/gif')
+            $image = imagecreatefromgif($file);
+
+        elseif ($info['mime'] == 'image/png')
+            $image = imagecreatefrompng($file);
+
+        $destination = $file .'.jpg';
+        imagejpeg($image, $destination, self::JPG_QUALITY);
+        $output = base64_encode(file_get_contents($destination));
+
+        unlink($file);
+        unlink($destination);
 
         return $output;
     }

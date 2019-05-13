@@ -1,0 +1,37 @@
+@charset "utf-8";
+
+
+/*-------------------------
+	Simple reset
+--------------------------*/
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+
+/*-------------------------
+	Demo page
+-------------------------*/
+
+html {
+	position: absolute;
+	min-height: 100%;
+	box-sizing: border-box;
+	width: 100%;
+}
+
+body {
+	background-color: #23232e;
+	font: 14px normal Arial, Helvetica, sans-serif;
+	z-index: -4;
+}
+
+.hidden {
+	display: none;
+}
+
+.visible {
+	display: block;
+}

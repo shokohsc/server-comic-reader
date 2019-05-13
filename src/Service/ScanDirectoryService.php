@@ -45,19 +45,23 @@ class ScanDirectoryService
         ;
 
         foreach ($finder as $file) {
+            $path = $this->getRelativePath($file->getRealPath());
+            $name = $file->getRelativePathname();
             if (is_dir($file->getRealPath())) {
                 $files[] = [
-                    "name" => $file->getRelativePathname(),
-                    "type" => "folder",
-                    "path" => $this->getRelativePath($file->getRealPath()),
-                    "items" => $this->scan($file->getRealPath()),
+                    'id' => base64_encode($path),
+                    'name' => $name,
+                    'type' => 'folder',
+                    'path' => $path,
+                    'items' => $this->scan($file->getRealPath()),
                 ];
             } else {
                 $files[] = array(
-                    "name" => $file->getRelativePathname(),
-                    "type" => "file",
-                    "path" => $this->getRelativePath($file->getRealPath()),
-                    "size" => filesize($file->getRealPath()) // Gets the size of this file
+                    'id' => base64_encode($path),
+                    'name' => $name,
+                    'type' => 'file',
+                    'path' => $path,
+                    'size' => filesize($file->getRealPath()) // Gets the size of this file
                 );
             }
         }
