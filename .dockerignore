@@ -1,6 +1,5 @@
 .git
-/assets/css/filebrowser.css
-/assets/js/filebrowser.js
+/assets/
 /public/files/
 /var
 /tests
