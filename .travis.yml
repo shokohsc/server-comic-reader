@@ -14,6 +14,7 @@ jobs:
       - sudo apt-get update
       - sudo apt-get install yarn
       - yarn --version
+      - mkdir public/files
       install:
       - composer install --optimize-autoloader --classmap-authoritative
       - composer dump-env prod
