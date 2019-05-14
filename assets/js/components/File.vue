@@ -57,7 +57,7 @@
             this.size = this.bytesToSize(this.propFile.size);
             this.name = this.escapeHTML(this.propFile.name);
             this.fileType = this.name.split('.');
-            this.fileType = [this.fileType.length - 1];
+            this.fileType = this.fileType[this.fileType.length - 1];
             this.icon = 'icon file f-' + this.fileType;
         }
     };
@@ -167,8 +167,6 @@
 .icon.file.f-gz,
 .icon.file.f-rar,
 .icon.file.f-zip,
-.icon.file.f-cbr,
-.icon.file.f-cbz,
 .icon.file.f-7z {
 	box-shadow: 1.74em -2.1em 0 0 #867c75 inset;
 }
@@ -177,10 +175,21 @@
 .icon.file.f-gz:after,
 .icon.file.f-rar:after,
 .icon.file.f-zip:after,
-.icon.file.f-cbr:after,
-.icon.file.f-cbz:after,
 .icon.file.f-7z:after {
 	border-bottom-color: #685f58;
+}
+
+.icon.file.f-cbz {
+	box-shadow: 1.74em -2.1em 0 0 #C77D06 inset;
+}
+.icon.file.f-cbz:after {
+	border-bottom-color: #9D6100;
+}
+.icon.file.f-cbr {
+	box-shadow: 1.74em -2.1em 0 0 #381288 inset;
+}
+.icon.file.f-cbr:after {
+	border-bottom-color: #2A0A6B;
 }
 
 .icon.file.f-html,

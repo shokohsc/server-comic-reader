@@ -7,7 +7,7 @@
 <script>
     import Filebrowser from './Filebrowser.vue';
     import Error from './Error.vue';
-    import Loading from './Loading.vue';
+    import Loading from './DeadpoolLoading.vue';
     import Reader from './Reader.vue';
 
     export default {
