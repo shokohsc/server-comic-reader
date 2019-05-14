@@ -30,7 +30,7 @@ jobs:
       - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
       script:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      - docker build -t web-reader .
+      - docker build -t server-comic-reader .
       - docker images
-      - docker tag web-reader $DOCKER_USERNAME/web-reader
-      - docker push $DOCKER_USERNAME/web-reader
+      - docker tag server-comic-reader $DOCKER_USERNAME/server-comic-reader
+      - docker push $DOCKER_USERNAME/server-comic-reader
