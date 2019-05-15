@@ -39,6 +39,23 @@ const getters = {
         search(getters.files, id);
 
         return found;
+    },
+    search: (state, getters) => value => {
+        let found = [];
+        const regex = new RegExp('(' + value + ')', 'g');
+        const search = (files, regex) => {
+            files.forEach(file => {
+                if (file.name.toLowerCase().match(regex)) {
+                    found.push(file);
+                } else if ('folder' === file.type && !file.name.toLowerCase().match(regex)){
+                    search(file.items, regex);
+                }
+            });
+        };
+
+        search(getters.files, regex);
+
+        return found;
     }
 }
 

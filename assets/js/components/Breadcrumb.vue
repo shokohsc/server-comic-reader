@@ -37,6 +37,18 @@
                 return this.$store.getters['router/key'];
             },
             folder: function() {
+                const isSearch = 0 === atob(this.key).indexOf('search=');
+                if (isSearch) {
+                    const value = atob(this.key).substring(('search=').length);
+                    return {
+                        id: this.key,
+                        name: 'files/search/' + value,
+                        type: 'folder',
+                        path: 'files/search/' + value,
+                        items: this.$store.getters['files/search'](value)
+                    };
+                }
+
                 return this.$store.getters['files/folderWithId'](this.key);
             }
         },
@@ -48,7 +60,7 @@
                         nextDir = '';
                     for (let i = 0; i < urls.length; i++) {
                         let condition = (0 <= urls[i].indexOf(folder));
-                        if (condition) {
+                        if (condition && 'search' !== urls[i]) {
                             nextDir = urls[i];
                             break;
                         }

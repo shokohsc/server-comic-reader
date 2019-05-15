@@ -54,7 +54,12 @@
             },
             extractDataProperty: function(property) {
                 const id = this.$store.getters['router/key'];
-                const files = this.$store.getters['files/filesInFolderWithId'](id);
+                let files = this.$store.getters['files/filesInFolderWithId'](id);
+                const isSearch = 0 === atob(id).indexOf('search=');
+                if (isSearch) {
+                    const value = (atob(id)).substring(('search=').length);
+                    files = this.$store.getters['files/search'](value);
+                }
 
                 return this.parseData(files)[property];
             }

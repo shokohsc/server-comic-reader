@@ -23,9 +23,13 @@
                     let target = $(event.target)[0];
                     let value  = target.value.trim();
 
-                    window.location.hash = encodeURIComponent(this.currentPath);
-                    if (value.length) {
-                        window.location.hash = 'search=' + value.trim();
+                    if (1 < value.length) {
+                        let path = 'search=' + value
+                        window.location.hash = path;
+                        this.$store.commit('router/addUrl', path);
+                        this.$store.commit('router/setPath', encodeURIComponent(path));
+                        this.$store.commit('router/setKey', btoa(path));
+                        window.location.hash = encodeURIComponent(path);
                     }
                 }
             },
