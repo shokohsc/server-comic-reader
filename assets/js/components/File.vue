@@ -1,11 +1,13 @@
 <template>
-    <li @click.stop.prevent="read" class="files">
-        <a :href="path" :title="path" class="files">
-            <span :class="icon"></span>
-            <span class="name">{{ name }}</span>
-            <span class="details">{{ size }}</span>
-        </a>
-    </li>
+    <v-touch @tap="read" class="inline">
+        <li @click.stop.prevent="read" class="files">
+            <a :href="path" class="files">
+                <span :class="icon"></span>
+                <span class="name">{{ name }}</span>
+                <span class="details">{{ size }}</span>
+            </a>
+        </li>
+    </v-touch>
 </template>
 
 <script>
@@ -26,18 +28,15 @@
             read: function (event) {
                 if (event) {
                     this.$eventBus.$emit('loading-comic');
-                    let target = $(event.target)[0];
-                    if (null != target.title.match(/files\/(.+)\.(cbr|cbz)$/gm)) {
-                        this.$store.dispatch('comic/read', encodeURIComponent(target.title))
-                        .then((response) => {
-                            this.$eventBus.$emit('display-comic', response);
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                            this.$store.commit('comic/reset');
-                            this.$eventBus.$emit('close-comic');
-                        });
-                    }
+                    this.$store.dispatch('comic/read', encodeURIComponent(this.path))
+                    .then((response) => {
+                        this.$eventBus.$emit('display-comic', response);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        this.$store.commit('comic/reset');
+                        this.$eventBus.$emit('close-comic');
+                    });
                 }
             },
             bytesToSize: function (bytes) {

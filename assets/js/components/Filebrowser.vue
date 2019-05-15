@@ -1,7 +1,7 @@
 <template>
     <div class="filemanager">
-        <!-- <Search></Search> -->
         <Breadcrumb></Breadcrumb>
+        <Search></Search>
         <Files></Files>
     </div>
 </template>

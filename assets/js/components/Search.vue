@@ -1,5 +1,5 @@
 <template>
-    <div @click="toggle" class="search">
+    <div @click="toggle" @focusout="clear" class="search">
         <input @input="search" @keyup.esc="clear" type="search" placeholder="Find a file.."/>
     </div>
 </template>
@@ -15,7 +15,6 @@
             toggle: function(event) {
                 if (event) {
                     let $target = $(event.target);
-                    $target.find('span').hide();
                     $target.find('input[type=search]').show().focus();
                 }
             },
@@ -34,11 +33,9 @@
                 if (event) {
                     let target = $(event.target)[0];
 
-                    if (!target.value.trim().length) {
-                        window.location.hash = encodeURIComponent(this.currentPath);
-                        $(target).hide();
-                        $(target).parent().find('span').show();
-                    }
+                    window.location.hash = encodeURIComponent(this.currentPath);
+                    $(target).hide();
+                    $(target).parent().find('span').show();
                 }
             }
         }
@@ -48,14 +45,12 @@
 <style>
 .filemanager .search {
 	position: absolute;
-	padding-right: 30px;
+    margin-left: 23px;
+    margin-top: 10px;
 	cursor: pointer;
-	right: 0;
 	font-size: 17px;
 	color: #ffffff;
 	display: block;
-	width: 40px;
-	height: 40px;
 }
 
 .filemanager .search:before {
@@ -66,7 +61,6 @@
 	height: 11px;
 	border-radius: 50%;
 	border: 2px solid #ffffff;
-	right: 8px;
 }
 
 .filemanager .search:after {
@@ -77,7 +71,7 @@
 	border-radius: 2px;
 	position: absolute;
 	top: 23px;
-	right: 6px;
+    left: 14px;
 	-webkit-transform: rotate(-45deg);
 	transform: rotate(-45deg);
 }
@@ -88,7 +82,8 @@
 	background-color: #FFF;
 	width: 250px;
 	height: 44px;
-	margin-left: -215px;
+    margin-left: 30px;
+    margin-right: 20px;
 	padding-left: 20px;
 	text-decoration-color: #4d535e;
 	font-size: 16px;
