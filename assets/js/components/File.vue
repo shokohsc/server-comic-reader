@@ -54,7 +54,7 @@
             this.path = this.propFile.path;
             this.type = this.propFile.type;
             this.size = this.bytesToSize(this.propFile.size);
-            this.name = this.escapeHTML(this.propFile.name);
+            this.name = this.propFile.name;
             this.fileType = this.name.split('.');
             this.fileType = this.fileType[this.fileType.length - 1];
             this.icon = 'icon file f-' + this.fileType;

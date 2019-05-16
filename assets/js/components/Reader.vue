@@ -1,5 +1,5 @@
 <template>
-    <v-touch @swipeleft="nextPage" @swiperight="previousPage">
+    <v-touch @swipeleft="nextPage" @swiperight="previousPage" @swipeup="scroll" @swipedown="scroll">
         <div :style="{ height: height + 'px' }">
             <div v-on:click="previousPage" class="left"></div>
             <div v-on:click="close" class="center"></div>
@@ -55,6 +55,15 @@
                         this.previousPage();
                         break;
                 }
+            },
+            scroll: function(event) {
+                let speed = Math.abs(event.overallVelocityY);
+                    speed = Math.floor(speed) > 0 ? speed : 1;
+                const scroll = {
+                    top: Math.floor((window.scrollY - event.deltaY) * speed),
+                    behavior: 'smooth'
+                };
+                window.scroll(scroll);
             }
         },
         created: function() {

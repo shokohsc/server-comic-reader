@@ -13,7 +13,7 @@ class DefaultController extends AbstractController
 {
     /**
       * @Route("/", methods={"GET"}))
-      * @Cache(expires="tomorrow", public=true)
+      * @Cache(expires="+5 minutes", public=true)
       */
     public function index()
     {
@@ -22,7 +22,7 @@ class DefaultController extends AbstractController
 
     /**
       * @Route("/scan", methods={"GET"}))
-      * @Cache(expires="tomorrow", public=true)
+      * @Cache(expires="+5 minutes", public=true)
       */
     public function scan(ScanDirectoryService $service): JsonResponse
     {
@@ -39,7 +39,7 @@ class DefaultController extends AbstractController
 
     /**
      * @Route("/read/{path}", requirements={"path"=".+"}, methods={"GET"}))
-     * @Cache(expires="tomorrow", public=true)
+     * @Cache(expires="+5 minutes", public=true)
      */
     public function read(string $path, ReaderService $service)
     {
