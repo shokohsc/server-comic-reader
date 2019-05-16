@@ -4,7 +4,7 @@
             <a @click.stop.prevent :href="link.path" :title="link.path">
                 <span class="folderName">{{ link.name }}</span>
             </a>
-            <span class="arrow">→</span>
+            <span class="arrow">→ </span>
         </div>
         <div class="inline">
             <span class="folderName">{{ last }}</span>
