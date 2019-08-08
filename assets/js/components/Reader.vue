@@ -1,6 +1,6 @@
 <template>
-    <v-touch @swipeleft="nextPage" @swiperight="previousPage" @swipeup="scroll" @swipedown="scroll">
-        <div :style="{ height: height + 'px' }">
+    <v-touch @swipeleft="nextPage" @swiperight="previousPage">
+        <div :style="{ height: height + 'px' }" v-dragscroll.y="true">
             <div v-on:click="previousPage" class="left"></div>
             <div v-on:click="close" class="center"></div>
             <div v-on:click="nextPage" class="right"></div>

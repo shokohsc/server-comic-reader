@@ -14,11 +14,13 @@ import store from './store/index.js';
 import App from './components/App.vue';
 import Vue from 'vue';
 import VueTouch from 'vue-touch';
+import VueDragscroll from 'vue-dragscroll'
 
 // EventBus
 Vue.prototype.$eventBus = new Vue();
 
 Vue.use(VueTouch);
+Vue.use(VueDragscroll)
 
 /**
  * Create a fresh Vue Application instance
