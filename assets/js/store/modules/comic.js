@@ -23,6 +23,9 @@ const getters = {
 const actions = {
     read({}, path) {
         return reader.read(path);
+    },
+    preview({}, path) {
+        return reader.preview(path);
     }
 }
 

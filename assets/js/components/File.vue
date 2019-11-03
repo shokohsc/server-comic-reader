@@ -2,7 +2,10 @@
     <v-touch @tap="read" class="inline">
         <li @click.stop.prevent="read" class="files">
             <a :href="path" class="files">
-                <span :class="icon"></span>
+                <span v-if="preview" :class="icon">
+                    <img :src="preview" :alt="name" />
+                </span>
+                <span v-else :class="icon"></span>
                 <span class="name">{{ name }}</span>
                 <span class="details">{{ size }}</span>
             </a>
@@ -21,7 +24,8 @@
                 fileType: '',
                 icon: '',
                 name: '',
-                size: 0
+                size: 0,
+                preview: ''
             }
         },
         methods: {
@@ -58,6 +62,17 @@
             this.fileType = this.name.split('.');
             this.fileType = this.fileType[this.fileType.length - 1];
             this.icon = 'icon file f-' + this.fileType;
+
+            if ('cbr' === this.fileType || 'cbz' === this.fileType) {
+                this.$store.dispatch('comic/preview', encodeURIComponent(this.path))
+                .then((response) => {
+                    this.icon = 'icon preview';
+                    this.preview = 'data:' + response[0].type + ';base64,' + response[0].image;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+            }
         }
     };
 </script>
@@ -65,6 +80,22 @@
 <style>
 .icon {
 	font-size: 23px;
+}
+.icon.preview {
+	width: 2.5em;
+	height: 3em;
+	line-height: 3em;
+	text-align: center;
+	border-radius: 0.25em;
+	color: #FFF;
+	display: inline-block;
+	margin: 0.9em 1.2em 0.8em 1.3em;
+	position: relative;
+	overflow: hidden;
+}
+.icon.preview img{
+	width: 2.5em;
+	height: 3em;
 }
 .icon.file {
 	width: 2.5em;

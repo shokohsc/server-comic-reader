@@ -64,6 +64,34 @@ class ReaderService
      * @param  string $path
      *
      * @return array
+     */
+    public function preview(string $path): array
+    {
+        $archive = $this->factory->build($path);
+        $pages = $archive->preview($path);
+
+        $comic = (new Comic)
+            ->setPath($path)
+            ->setHash(base64_encode($path))
+        ;
+
+        foreach ($pages as $page) {
+            $object = (new Page)
+                ->setImage($page['image'])
+                ->setHeight($page['height'])
+                ->setWidth($page['width'])
+                ->setType($page['type'])
+            ;
+            $comic->addPage($object);
+        }
+
+        return $this->format($comic->getPages());
+    }
+
+    /**
+     * @param  string $path
+     *
+     * @return array
      *
      */
     protected function save(string $path): array
@@ -121,7 +149,7 @@ class ReaderService
     protected function compress(string $source): string
     {
         $source = base64_decode($source);
-        $file = sys_get_temp_dir() .'/output';
+        $file = sys_get_temp_dir() .'/output'. uniqid();
         file_put_contents($file, $source);
         $info = getimagesize($file);
 

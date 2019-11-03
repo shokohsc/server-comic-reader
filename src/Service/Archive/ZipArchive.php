@@ -46,6 +46,39 @@ class ZipArchive implements ArchiveInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function preview(string $path): array
+    {
+        try {
+            $this->open($path);
+            $this->archive->extractTo(sys_get_temp_dir());
+            $entries = $this->sortFiles();
+            $output = [];
+            $directories = [];
+            foreach ($entries as $key => $file) {
+                $extractedFile = sys_get_temp_dir() .'/'. $file['name'];
+                if (($file['size'] > 0) && preg_match('/jp(e?)g|gif|png/i', $extractedFile)) {
+                    list($width, $height, $type, $attr) = getimagesize($extractedFile);
+                    $output[] = [
+                        'image' => base64_encode(file_get_contents($extractedFile)),
+                        'width' => $width,
+                        'height' => $height,
+                        'type' => image_type_to_mime_type($type),
+                    ];
+                    is_dir($extractedFile) ? $directories[] = $extractedFile : unlink($extractedFile);
+                    $this->close();
+                    $this->cleanDirectories($directories);
+
+                    return $output;
+                };
+            }
+        } catch (\Exception $e) {
+            throw new \Exception(sprintf("Cannot extract %s as ZipArchive.", $path));
+        }
+    }
+
+    /**
      * @param array $directories
      */
     protected function cleanDirectories(array $directories): void

@@ -10,4 +10,11 @@ interface ArchiveInterface
    * @return array
    */
   public function extract(string $path): array;
+
+  /**
+   * @param  string           $path
+   *
+   * @return array
+   */
+  public function preview(string $path): array;
 }

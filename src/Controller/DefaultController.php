@@ -47,4 +47,15 @@ class DefaultController extends AbstractController
 
         return new JsonResponse($service->read($path));
     }
+
+    /**
+     * @Route("/preview/{path}", requirements={"path"=".+"}, methods={"GET"}))
+     * @Cache(expires="+5 minutes", public=true)
+     */
+    public function preview(string $path, ReaderService $service)
+    {
+        $path = $this->getParameter('kernel.project_dir') . '/public/' . rawurldecode($path);
+
+        return new JsonResponse($service->preview($path));
+    }
 }

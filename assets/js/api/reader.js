@@ -6,5 +6,8 @@ export default {
     },
     read(path, success, failure) {
         return $.get('/read/' + path);
+    },
+    preview(path, success, failure) {
+        return $.get('/preview/' + path);
     }
 };
