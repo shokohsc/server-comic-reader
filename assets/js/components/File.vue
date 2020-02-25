@@ -64,6 +64,7 @@
             this.icon = 'icon file f-' + this.fileType;
 
             if ('cbr' === this.fileType || 'cbz' === this.fileType) {
+                this.preview = '//i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/portrait_incredible.jpg';
                 this.$store.dispatch('comic/preview', encodeURIComponent(this.path))
                 .then((response) => {
                     this.icon = 'icon preview';
