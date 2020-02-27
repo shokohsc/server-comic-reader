@@ -4,6 +4,7 @@ import reader from '../../api/reader'
 const state = {
     comic: [],
     index: 0,
+    total: 0,
 }
 
 // getters
@@ -13,6 +14,9 @@ const getters = {
     },
     index: state => {
         return state.index;
+    },
+    total: state => {
+        return state.comic.length;
     },
     page: state => {
         return state.comic[state.index];

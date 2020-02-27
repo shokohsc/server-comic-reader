@@ -5,6 +5,7 @@
             <div v-on:click="close" class="center"></div>
             <div v-on:click="nextPage" class="right"></div>
             <img :src="image" :width="width" class="image"/>
+            <p class="pages glow">{{ page }} / {{ total }}</p>
         </div>
     </v-touch>
 </template>
@@ -14,6 +15,12 @@
         computed: {
             index: function() {
                 return this.$store.getters['comic/index'];
+            },
+            page: function() {
+                return this.$store.getters['comic/index'] + 1;
+            },
+            total: function() {
+                return this.$store.getters['comic/total'];
             },
             image: function() {
                 return 'data:' + this.type + ';base64,' + this.$store.getters['comic/page']['image'];
@@ -111,5 +118,30 @@
     left: 0;
     z-index: -1;
     width: 100%;
+}
+.pages {
+    position: absolute;
+    top: 1%;
+    width: 100%;
+    opacity: 0.2;
+    pointer-events: none;
+    font-family: monospace;
+}
+.glow {
+  font-size: 80px;
+  color: #fff;
+  text-align: center;
+  -webkit-animation: glow 1s ease-in-out infinite alternate;
+  -moz-animation: glow 1s ease-in-out infinite alternate;
+  animation: glow 1s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes glow {
+  from {
+    text-shadow: 0 0 10px #000, 0 0 20px #000, 0 0 30px #0032e6, 0 0 40px #0032e6, 0 0 50px #0032e6, 0 0 60px #0032e6, 0 0 70px #0032e6;
+  }
+  to {
+    text-shadow: 0 0 20px #000, 0 0 30px #4d62ff, 0 0 40px #4d62ff, 0 0 50px #4d62ff, 0 0 60px #4d62ff, 0 0 70px #4d62ff, 0 0 80px #4d62ff;
+  }
 }
 </style>
