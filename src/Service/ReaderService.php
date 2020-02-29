@@ -11,7 +11,9 @@ use Doctrine\Common\Collections\Selectable;
 
 class ReaderService
 {
-    const JPG_QUALITY = 60;
+    const BANDWIDTH_LIMIT_MB = 5;
+    const LOW_QUALITY = 40;
+    const HIGH_QUALITY = 100;
 
     /**
      * @var FactoryInterface
@@ -46,10 +48,11 @@ class ReaderService
 
     /**
      * @param  string $path
+     * @param  string $downlink
      *
      * @return array
      */
-    public function read(string $path): array
+    public function read(string $path, string $downlink): array
     {
         // Removing database connection until a check is done ot sync files and database entries
         // $comic = $this->provider->get(base64_encode($path));
@@ -57,7 +60,7 @@ class ReaderService
         //     return $this->format($comic->getPages());
         // }
 
-        return $this->save($path);
+        return $this->save($path, $downlink);
     }
 
     /**
@@ -90,11 +93,12 @@ class ReaderService
 
     /**
      * @param  string $path
+     * @param  string $downlink
      *
      * @return array
      *
      */
-    protected function save(string $path): array
+    protected function save(string $path, string $downlink): array
     {
         $archive = $this->factory->build($path);
         $pages = $archive->extract($path);
@@ -117,21 +121,22 @@ class ReaderService
         // $this->manager->persist($comic);
         // $this->manager->flush();
 
-        return $this->format($comic->getPages());
+        return $this->format($comic->getPages(), $downlink);
     }
 
     /**
      * @param  Selectable $collection
+     * @param  string $downlink
      *
      * @return array
      *
      */
-    protected function format(Selectable $collection): array
+    protected function format(Selectable $collection, string $downlink = '0'): array
     {
         $output = [];
         foreach ($collection as $page) {
             $output[] = [
-                'image' => $this->compress($page->getImage()),
+                'image' => $this->compress($page->getImage(), $downlink),
                 'type' => $page->getType(),
                 'width' => $page->getWidth(),
                 'height' => $page->getHeight(),
@@ -143,10 +148,11 @@ class ReaderService
 
     /**
      * @param  string $source
+     * @param  string $downlink
      *
      * @return string
      */
-    protected function compress(string $source): string
+    protected function compress(string $source, string $downlink): string
     {
         $source = base64_decode($source);
         $file = sys_get_temp_dir() .'/output'. uniqid();
@@ -163,7 +169,8 @@ class ReaderService
             $image = imagecreatefrompng($file);
 
         $destination = $file .'.jpg';
-        imagejpeg($image, $destination, self::JPG_QUALITY);
+        $quality = intval($downlink) < self::BANDWIDTH_LIMIT_MB ? self::LOW_QUALITY : self::HIGH_QUALITY;
+        imagejpeg($image, $destination, $quality);
         $output = base64_encode(file_get_contents($destination));
 
         unlink($file);

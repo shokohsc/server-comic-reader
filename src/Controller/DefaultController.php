@@ -7,6 +7,7 @@ use App\Service\ScanDirectoryService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends AbstractController
@@ -41,18 +42,19 @@ class DefaultController extends AbstractController
      * @Route("/read/{path}", requirements={"path"=".+"}, methods={"GET"}))
      * @Cache(maxage="2 weeks", public=true)
      */
-    public function read(string $path, ReaderService $service)
+    public function read(Request $request, string $path, ReaderService $service): JsonResponse
     {
         $path = $this->getParameter('kernel.project_dir') . '/public/' . rawurldecode($path);
+        $downlink = $request->headers->get('x-downlink');
 
-        return new JsonResponse($service->read($path));
+        return new JsonResponse($service->read($path, $downlink));
     }
 
     /**
      * @Route("/preview/{path}", requirements={"path"=".+"}, methods={"GET"}))
      * @Cache(maxage="2 weeks", public=true)
      */
-    public function preview(string $path, ReaderService $service)
+    public function preview(string $path, ReaderService $service): JsonResponse
     {
         $path = $this->getParameter('kernel.project_dir') . '/public/' . rawurldecode($path);
 

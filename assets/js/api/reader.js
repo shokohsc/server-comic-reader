@@ -5,7 +5,10 @@ export default {
         return $.get('/scan');
     },
     read(path, success, failure) {
-        return $.get('/read/' + path);
+        return $.get({
+            url: '/read/' + path,
+            beforeSend: xhr => xhr.setRequestHeader('X-Downlink', navigator.connection.downlink),
+        });
     },
     preview(path, success, failure) {
         return $.get('/preview/' + path);
