@@ -11,7 +11,7 @@ use Doctrine\Common\Collections\Selectable;
 
 class ReaderService
 {
-    const BANDWIDTH_LIMIT_MB = 5;
+    const BANDWIDTH_LIMIT_MB = 2;
     const LOW_QUALITY = 40;
     const HIGH_QUALITY = 100;
 
@@ -169,7 +169,7 @@ class ReaderService
             $image = imagecreatefrompng($file);
 
         $destination = $file .'.jpg';
-        $quality = intval($downlink) < self::BANDWIDTH_LIMIT_MB ? self::LOW_QUALITY : self::HIGH_QUALITY;
+        $quality = floatval($downlink) < self::BANDWIDTH_LIMIT_MB ? self::LOW_QUALITY : self::HIGH_QUALITY;
         imagejpeg($image, $destination, $quality);
         $output = base64_encode(file_get_contents($destination));
 
