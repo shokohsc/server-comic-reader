@@ -1,11 +1,13 @@
 <template>
-    <li @click.stop.prevent="browse" class="folders">
-        <a :href="path" :title="path" class="folders">
-            <span :class="iconClass"></span>
-            <span class="name">{{ name }}</span>
-            <span class="details">{{ itemsLength }}</span>
-        </a>
-    </li>
+    <div class="inline">
+        <li @click.stop.prevent="browse" class="folders">
+            <a :href="path" :title="path" class="folders">
+                <span :class="iconClass"></span>
+                <span class="name">{{ name }}</span>
+                <span class="details">{{ itemsLength }}</span>
+            </a>
+        </li>
+    </div>
 </template>
 
 <script>

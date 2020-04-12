@@ -83,30 +83,25 @@
 	font-size: 23px;
 }
 .icon.preview {
-	width: 2.5em;
-	height: 3em;
 	line-height: 3em;
 	text-align: center;
 	border-radius: 0.25em;
 	color: #FFF;
 	display: inline-block;
-	margin: 0.9em 1.2em 0.8em 1.3em;
+    margin: 20px 20px -15px;
 	position: relative;
 	overflow: hidden;
 }
 .icon.preview img{
-	width: 2.5em;
-	height: 3em;
+	width: 100%;
 }
 .icon.file {
-	width: 2.5em;
-	height: 3em;
 	line-height: 3em;
 	text-align: center;
 	border-radius: 0.25em;
 	color: #FFF;
 	display: inline-block;
-	margin: 0.9em 1.2em 0.8em 1.3em;
+    margin: 20px 20px -15px;
 	position: relative;
 	overflow: hidden;
 	box-shadow: 1.74em -2.1em 0 0 #A4A7AC inset;

@@ -81,8 +81,8 @@
 .filemanager .data li {
 	border-radius: 3px;
 	background-color: #373743;
-	width: 307px;
-	height: 118px;
+	width: 250px;
+	height: 415px;
 	list-style-type: none;
 	margin: 10px;
 	display: inline-block;
@@ -106,6 +106,7 @@
 	left: 0;
 	width: 100%;
 	height: 100%;
+	text-align: center;
 }
 
 .filemanager .data li .name {
@@ -113,25 +114,20 @@
 	font-size: 15px;
 	font-weight: 700;
 	line-height: 20px;
-	width: 55%;
+	width: 80%;
 	white-space: nowrap;
 	display: inline-block;
-	position: absolute;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	top: 40px;
 }
 
 .filemanager .data li .details {
 	color: #b6c1c9;
 	font-size: 13px;
 	font-weight: 400;
-	width: 55px;
-	height: 10px;
-	top: 64px;
-	white-space: nowrap;
-	position: absolute;
+	width: 80%;
 	display: inline-block;
+	text-align: center;
 }
 
 .filemanager .nothingfound {

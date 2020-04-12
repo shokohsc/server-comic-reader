@@ -22,8 +22,8 @@
 
 <style>
 .filemanager {
-	width: 95%;
-	max-width:1340px;
+	width: 100%;
+	max-width:1440px;
 	position: relative;
 	margin: 100px auto 50px;
 }
