@@ -90,6 +90,7 @@
     height: inherit;
     width: 40%;
     display: inline-block;
+    cursor: w-resize;
     /* opacity: 0.5;
     background-color: #F00; */
 }
@@ -100,6 +101,7 @@
     height: inherit;
     width: 20%;
     display: inline-block;
+    cursor: not-allowed;
     /* opacity: 0.5;
     background-color: #0F0; */
 }
@@ -110,6 +112,7 @@
     height: inherit;
     width: 40%;
     display: inline-block;
+    cursor: e-resize;
     /* opacity: 0.5;
     background-color: #00F; */
 }
