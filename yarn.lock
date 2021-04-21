@@ -5145,10 +5145,10 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
-vue-dragscroll@^1.10.0:
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/vue-dragscroll/-/vue-dragscroll-1.10.0.tgz#418254f6c18664af681a262c3a38d9643c1e045f"
-  integrity sha512-i58v8ubaUqoVKdRcMlWp7OYEpuKCZnJnq2CHzOVCAwtAQr53PifDc0FJDGvCQGVMKH3+6ELztsAm1HiLzq3a2A==
+vue-dragscroll@1.10.2:
+  version "1.10.2"
+  resolved "https://registry.yarnpkg.com/vue-dragscroll/-/vue-dragscroll-1.10.2.tgz#34ace3c6aa7a39edc157cac5e9ea1d5b31b1119c"
+  integrity sha512-fGVw8KP3ggbp49csa1Tbj2my0YuNmZ1zxYYge4QWIypGNHVwd9hResy/v6QF5HxY0a+qd2EBteeBpxtJxFMp5A==
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.3"
